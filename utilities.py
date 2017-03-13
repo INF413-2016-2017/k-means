@@ -3,61 +3,20 @@
 from random import randint
 import matplotlib.pyplot as plt
 
+def barycenter(L, d):
+    """
+        Return the coordinates of the barycenter of the tuples in the list L
+    """
+    n = len(L)
+    B = [0 for k in range(d)]
 
-def distance_euclidean(X, Y):
-    """
-        Returns the euclidean distance between X and Y. No sqrt applied.
-        X and Y are tuples of the same dimension.
-    """
-    d = len(X)
-    if len(Y)!=d:
-        raise Exception("X and Y don't have the same dimension")
-    else:
-        distance = 0
+    for point in L:
         for i in range(d):
-            distance += (X[i]-Y[i])**2
-        return distance
+            B[i] += point[i]
 
+    B = map(lambda x: x/n, B)
+    return tuple(B)
 
-def getCenter(p, d):
-    """
-        Return the closest point to the barycenter in p.
-    """
-
-    def barycenter(L, d):
-        """
-            Return the coordinates of the barycenter of the tuples in the list L
-        """
-        n = len(L)
-        B = [0 for k in range(d)]
-
-        for point in L:
-            for i in range(d):
-                B[i] += point[i]
-
-        B = map(lambda x: x/n, B)
-        return tuple(B)
-
-    B = barycenter(p,d)
-
-    distances = [ distance_euclidean(p[i], B) for i in range(len(p)) ]
-    #FIXME: Optimize the min func.
-    return p[distances.index(min(distances))]
-
-
-def chooseCenter_rand(x, k):
-    """
-        Choose k centers in x randomly.
-
-		k: integer
-		x: list of tuples
-    """
-    c = []
-
-    for i in range(k):
-        c.append(x.pop(randint(0,len(x)-1)))
-
-    return c
 
 
 def pointsToClusters(L, c):
@@ -74,7 +33,6 @@ def pointsToClusters(L, c):
         i = L[p].index(center)
         C[i].append(p)
     return C
-
 
 
 def display2D(C):

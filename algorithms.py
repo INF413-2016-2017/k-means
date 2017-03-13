@@ -14,9 +14,13 @@ class algorithm:
 		this.C = []
 
 	def updateCenters(this):
-	    # For each cluster, compute the new center
-	    for i in range(this.k):
-	        this.c[i] = getCenter(this.C[i], this.d)
+		# For each cluster, compute the new center
+		for i in range(this.k):
+			# Return the closest point to the barycenter in this.C[i].
+			B = barycenter(this.C[i], this.d)
+			#FIXME: Optimize the min func.
+			distances = [ this.distance(this.C[i][j], B) for j in range(len(this.C[i])) ]
+			this.c[i] = this.C[i][distances.index(min(distances))]
 
 	def updateDistances(this):
 		pLeft = this.p-set(this.c)
@@ -41,8 +45,17 @@ class algorithm:
 			return distance
 
 class alg0(algorithm):
+	def chooseCenters(this):
+		"""
+			Choose k centers among the points in p randomly.
+		"""
+		this.c = []
+		pTmp = list(this.p)
+		for i in range(this.k):
+			this.c.append( pTmp.pop(randint(0,this.n-1)) )
+
 	def run(this):
-		this.c = chooseCenter_rand(list(this.p), this.k)
+		this.chooseCenters()
 		this.updateDistances()
 		this.C = pointsToClusters(this.L, this.c)
 
