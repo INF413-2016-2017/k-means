@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 def distance_euclidean(X, Y):
-    """ 
+    """
         Returns the euclidean distance between X and Y. No sqrt applied.
         X and Y are tuples of the same dimension.
     """
@@ -23,34 +23,37 @@ def getCenter(p, d):
     """
         Return the closest point to the barycenter in p.
     """
-    
+
     def barycenter(L, d):
         """
             Return the coordinates of the barycenter of the tuples in the list L
         """
         n = len(L)
         B = [0 for k in range(d)]
-        
+
         for point in L:
             for i in range(d):
                 B[i] += point[i]
-        
+
         B = map(lambda x: x/n, B)
         return tuple(B)
-    
+
     B = barycenter(p,d)
-    
+
     distances = [ distance_euclidean(p[i], B) for i in range(len(p)) ]
     #FIXME: Optimize the min func.
     return p[distances.index(min(distances))]
-    
+
 
 def chooseCenter_rand(x, k):
     """
-        Choose k centers in x randomly
+        Choose k centers in x randomly.
+
+		k: integer
+		x: list of tuples
     """
     c = []
-    
+
     for i in range(k):
         c.append(x.pop(randint(0,len(x)-1)))
 
@@ -60,7 +63,7 @@ def updateDistances(c, p):
     pLeft = p-set(c)
     k = len(c)
     L = {}
-    
+
     for p in pLeft:
         L[p] = [0 for i in range(k)]
         for i in range(k):
@@ -87,11 +90,11 @@ def updateCenters(C):
     d = len(C[0][0])
     k = len(C)
     c = [ None for i in range(k) ]
-    
+
     # For each cluster, compute the new center
     for i in range(k):
         c[i] = getCenter(C[i], d)
-    
+
     return c
 
 def display(C):

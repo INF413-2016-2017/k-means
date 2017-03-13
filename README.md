@@ -11,9 +11,8 @@ TP1_Gardin_Garet_INF413_2016_2017_A
 
 Todo
 ----
--Write data back to files
+-Write data back to files: remove whitespaces.
 -Use numpy instead of list/tuples.
--Barycentre: prendre pour centre le point le plus proche du barycentre calculé.
 -Bibliographie
 -Faire des recherches
 -Revoir les notations: s'aligner sur l'enoncé
@@ -21,3 +20,5 @@ Todo
 -Choix des centres initiaux (voir les pdf)
 -Choix du critère d'arrêt
 -Choix du nombre de centres (à voir, cela peut dépendre de l'utilisation)
+-Add 2D safeguard for display func
+-Add 3D display
