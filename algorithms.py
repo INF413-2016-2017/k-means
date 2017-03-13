@@ -44,7 +44,21 @@ class algorithm:
 				distance += (X[i]-Y[i])**2
 			return distance
 
+
+
 class alg0(algorithm):
+	def pointsToClusters(this):
+	    """
+	        Assign points to the cluster of the closest center.
+	    """
+	    this.C = [ [this.c[i]] for i in range(this.k) ]                              # C[i] is the list of points in cluster i. Add the center in the list.
+
+	    for p in this.L.keys():
+	        #FIXME: optimize the min research: write a function
+	        center = min(this.L[p])
+	        i = this.L[p].index(center)
+	        this.C[i].append(p)
+
 	def chooseCenters(this):
 		"""
 			Choose k centers among the points in p randomly.
@@ -57,11 +71,11 @@ class alg0(algorithm):
 	def run(this):
 		this.chooseCenters()
 		this.updateDistances()
-		this.C = pointsToClusters(this.L, this.c)
+		this.pointsToClusters()
 
 		i = 0
 		while i<5:
 			this.updateCenters()
 			this.updateDistances()
-			this.C = pointsToClusters(this.L, this.c)
+			this.pointsToClusters()
 			i += 1

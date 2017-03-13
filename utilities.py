@@ -18,23 +18,6 @@ def barycenter(L, d):
     return tuple(B)
 
 
-
-def pointsToClusters(L, c):
-    """
-        Assign points to the cluster of the closest center.
-    """
-    n = len(L)
-    k = len(c)
-    C = [ [c[i]] for i in range(k) ]                                            # C[i] is the list of points in cluster i. Add the center in the list.
-
-    for p in L.keys():
-        #FIXME: optimize the min research: write a function
-        center = min(L[p])
-        i = L[p].index(center)
-        C[i].append(p)
-    return C
-
-
 def display2D(C):
 	if len(C[0][0]) != 2:
 		raise Exception("Wrong dimension")
