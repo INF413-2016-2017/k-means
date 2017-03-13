@@ -4,7 +4,7 @@ from utilities import *
 import numpy as np
 
 
-class algorithm:
+class algorithm(object):
 	def __init__(this, data, nClusters, dimension):
 		this.p = set(data)
 		this.n = len(data)
@@ -44,9 +44,23 @@ class algorithm:
 				distance += (X[i]-Y[i])**2
 			return distance
 
+	def run(this):
+		this.chooseCenters()
+		this.updateDistances()
+		this.pointsToClusters()
+
+		while this.stopCondition():
+			this.updateCenters()
+			this.updateDistances()
+			this.pointsToClusters()
+
 
 
 class alg0(algorithm):
+	def __init__(this, data, nClusters, dimension):
+		super(alg0, this).__init__(data, nClusters, dimension)
+		this.iter = 0
+
 	def pointsToClusters(this):
 	    """
 	        Assign points to the cluster of the closest center.
@@ -65,14 +79,6 @@ class alg0(algorithm):
 		for i in range(this.k):
 			this.c.append( pTmp.pop(randint(0,this.n-1)) )
 
-	def run(this):
-		this.chooseCenters()
-		this.updateDistances()
-		this.pointsToClusters()
-
-		i = 0
-		while i<5:
-			this.updateCenters()
-			this.updateDistances()
-			this.pointsToClusters()
-			i += 1
+	def stopCondition(this):
+		this.iter += 1
+		return this.iter < 10

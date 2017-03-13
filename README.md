@@ -21,4 +21,3 @@ Todo
 -Choix du critère d'arrêt
 -Choix du nombre de centres (à voir, cela peut dépendre de l'utilisation)
 -Study complexity
--Move run method to algorithm class?
