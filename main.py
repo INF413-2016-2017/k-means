@@ -12,6 +12,6 @@ p = filesManagment.read_data("out.csv", ignore_first_column=True)
 
 A = alg0(p, 4, 2)
 A.run()
-display(A.C)
+display2D(A.C)
 
 filesManagment.write_solution('sol.csv', C)

@@ -59,17 +59,6 @@ def chooseCenter_rand(x, k):
 
     return c
 
-def updateDistances(c, p):
-    pLeft = p-set(c)
-    k = len(c)
-    L = {}
-
-    for p in pLeft:
-        L[p] = [0 for i in range(k)]
-        for i in range(k):
-            L[p][i] = distance_euclidean(c[i], p)
-    return L
-
 
 def pointsToClusters(L, c):
     """
@@ -97,8 +86,11 @@ def updateCenters(C):
 
     return c
 
-def display(C):
-    for cluster in C:
-        points = zip(*cluster)
-        plt.scatter(points[0], points[1])
-    plt.show()
+def display2D(C):
+	if len(C[0][0]) != 2:
+		raise Exception("Wrong dimension")
+
+	for cluster in C:
+		points = zip(*cluster)
+		plt.scatter(points[0], points[1])
+	plt.show()
