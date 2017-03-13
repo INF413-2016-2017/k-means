@@ -14,4 +14,4 @@ A = alg0(p, 4, 2)
 A.run()
 display2D(A.C)
 
-filesManagment.write_solution('sol.csv', C)
+filesManagment.write_solution('sol.csv', A.C)

@@ -75,16 +75,7 @@ def pointsToClusters(L, c):
         C[i].append(p)
     return C
 
-def updateCenters(C):
-    d = len(C[0][0])
-    k = len(C)
-    c = [ None for i in range(k) ]
 
-    # For each cluster, compute the new center
-    for i in range(k):
-        c[i] = getCenter(C[i], d)
-
-    return c
 
 def display2D(C):
 	if len(C[0][0]) != 2:

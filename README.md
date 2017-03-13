@@ -22,3 +22,5 @@ Todo
 -Choix du nombre de centres (à voir, cela peut dépendre de l'utilisation)
 -Add 2D safeguard for display func
 -Add 3D display
+-Study complexity
+-Move run method to algorithm class?

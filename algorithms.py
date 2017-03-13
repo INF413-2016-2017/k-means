@@ -2,8 +2,6 @@
 
 from utilities import *
 
-# TODO: study complexity
-
 
 class algorithm:
 	def __init__(this, data, nClusters, dimension):
@@ -15,15 +13,19 @@ class algorithm:
 		this.L = []
 		this.C = []
 
+	def updateCenters(this):
+	    # For each cluster, compute the new center
+	    for i in range(this.k):
+	        this.c[i] = getCenter(this.C[i], this.d)
+
 	def updateDistances(this):
 		pLeft = this.p-set(this.c)
-		this.L = {} # Is it needed?
+		this.L = {}
 
 		for p in pLeft:
 			this.L[p] = [0 for i in range(this.k)]
 			for i in range(this.k):
 				this.L[p][i] = this.distance(this.c[i], p)
-		print(this.L)
 
 	def distance(this, X, Y):
 		"""
@@ -46,7 +48,7 @@ class alg0(algorithm):
 
 		i = 0
 		while i<5:
-			this.c = updateCenters(this.C)
+			this.updateCenters()
 			this.updateDistances()
 			this.C = pointsToClusters(this.L, this.c)
 			i += 1
