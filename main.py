@@ -6,12 +6,12 @@ from algorithms import *
 
 
 
-data = filesManagment.generate_random_data(50,2)
+data = filesManagment.generate_random_data(500,3)
 filesManagment.write_data(data, "out.csv")
 p = filesManagment.read_data("out.csv", ignore_first_column=True)
 
-A = alg0(p, 4, 2)
+A = alg0(p, 4, 3)
 A.run()
-display2D(A.C)
+display3D(A.C)
 
 filesManagment.write_solution('sol.csv', A.C)

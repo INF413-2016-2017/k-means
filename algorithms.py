@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from utilities import *
+import numpy as np
 
 
 class algorithm:
@@ -18,9 +19,8 @@ class algorithm:
 		for i in range(this.k):
 			# Return the closest point to the barycenter in this.C[i].
 			B = barycenter(this.C[i], this.d)
-			#FIXME: Optimize the min func.
 			distances = [ this.distance(this.C[i][j], B) for j in range(len(this.C[i])) ]
-			this.c[i] = this.C[i][distances.index(min(distances))]
+			this.c[i] = this.C[i][np.argmin(distances)]
 
 	def updateDistances(this):
 		pLeft = this.p-set(this.c)
@@ -37,7 +37,7 @@ class algorithm:
 			X and Y are tuples of the same dimension.
 		"""
 		if len(X)!=this.d or len(Y) != this.d:
-			raise Exception("X and Y don't have the same dimension")
+			raise Exception("Wrong dimension")
 		else:
 			distance = 0
 			for i in range(this.d):
@@ -54,10 +54,7 @@ class alg0(algorithm):
 	    this.C = [ [this.c[i]] for i in range(this.k) ]                              # C[i] is the list of points in cluster i. Add the center in the list.
 
 	    for p in this.L.keys():
-	        #FIXME: optimize the min research: write a function
-	        center = min(this.L[p])
-	        i = this.L[p].index(center)
-	        this.C[i].append(p)
+	        this.C[np.argmin(this.L[p])].append(p)
 
 	def chooseCenters(this):
 		"""
