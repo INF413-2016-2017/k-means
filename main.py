@@ -5,15 +5,15 @@ import filesManagment
 from algorithms import *
 
 
-nPoints=500
-dimension=3
-nClusters=3
+nPoints=5000
+dimension=2
+nClusters=10
 
 data = filesManagment.generate_random_data(nPoints, dimension)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
 
-A = alg0(p, nClusters, dimension, 10)
+A = Base(p, nClusters, dimension, 10)
 A.run()
 display(A.C)
 

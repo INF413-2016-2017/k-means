@@ -4,7 +4,7 @@ from utilities import *
 import numpy as np
 
 
-class algorithm(object):
+class Algorithm(object):
 	def __init__(this, data, nClusters, dimension):
 		this.p = set(data)
 		this.n = len(data)
@@ -56,9 +56,9 @@ class algorithm(object):
 
 
 
-class alg0(algorithm):
+class Base(Algorithm):
 	def __init__(this, data, nClusters, dimension, max_iter=10):
-		super(alg0, this).__init__(data, nClusters, dimension)
+		super(Base, this).__init__(data, nClusters, dimension)
 		this.iter = 0
 		this.max_iter = max_iter
 
@@ -83,3 +83,27 @@ class alg0(algorithm):
 	def stopCondition(this):
 		this.iter += 1
 		return this.iter < this.max_iter
+
+
+
+
+class BaseStopUnchanged(Base):
+	"""
+		Base algorithm, but stops when no points moved from a cluster for more than max_iter.
+	"""
+	def __init__(this, data, nClusters, dimension, max_iter=10):
+		super(BaseStopUnchanged, this).__init__(data, nClusters, dimension, max_iter)
+		this.C_former = []
+
+
+	def stopCondition(this):
+		if this.hasCHanged():
+			this.iter = 0
+			this.C_former = this.C
+		else:
+			this.iter += 1
+
+		return this.iter < this.iter_max
+
+	def hasChanged(this):
+		return this.C_former == this.C

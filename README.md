@@ -26,3 +26,5 @@ Todo
 -Study complexity  
 -Closing file after write: error.  
 -Add command line args  
+-Cluster size and number of iterations.
+-Show different iterations.  
