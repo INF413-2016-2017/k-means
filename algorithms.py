@@ -57,15 +57,16 @@ class algorithm(object):
 
 
 class alg0(algorithm):
-	def __init__(this, data, nClusters, dimension):
+	def __init__(this, data, nClusters, dimension, max_iter=10):
 		super(alg0, this).__init__(data, nClusters, dimension)
 		this.iter = 0
+		this.max_iter = max_iter
 
 	def pointsToClusters(this):
 	    """
 	        Assign points to the cluster of the closest center.
 	    """
-	    this.C = [ [this.c[i]] for i in range(this.k) ]                              # C[i] is the list of points in cluster i. Add the center in the list.
+	    this.C = [ [this.c[i]] for i in range(this.k) ]							# C[i] is the list of points in cluster i. Add the center in the list.
 
 	    for p in this.L.keys():
 	        this.C[np.argmin(this.L[p])].append(p)
@@ -81,4 +82,4 @@ class alg0(algorithm):
 
 	def stopCondition(this):
 		this.iter += 1
-		return this.iter < 10
+		return this.iter < this.max_iter
