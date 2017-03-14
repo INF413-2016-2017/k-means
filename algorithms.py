@@ -93,17 +93,19 @@ class BaseStopUnchanged(Base):
 	"""
 	def __init__(this, data, nClusters, dimension, max_iter=10):
 		super(BaseStopUnchanged, this).__init__(data, nClusters, dimension, max_iter)
+		this.iter_stop = 0
 		this.C_former = []
 
-
 	def stopCondition(this):
-		if this.hasCHanged():
-			this.iter = 0
+		this.iter += 1
+		if this.hasChanged():
+			this.iter_stop = 0
 			this.C_former = this.C
+			return True
 		else:
-			this.iter += 1
+			this.iter_stop += 1
+			return this.iter_stop < this.max_iter
 
-		return this.iter < this.iter_max
 
 	def hasChanged(this):
-		return this.C_former == this.C
+		return this.C_former != this.C
