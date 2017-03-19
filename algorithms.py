@@ -78,6 +78,7 @@ class Base(Algorithm):
 		"""
 		this.c = []
 		pTmp = list(this.p)
+		#print(pTmp)
 		for i in range(this.k):
 			this.c.append( pTmp.pop(randint(0,this.n-1)) )
 
@@ -123,3 +124,11 @@ class BaseWords(Base):
 			X and Y are strings.
 		"""
 		return distance.levenshtein(X, Y, normalized=True)
+
+	def chooseCenters(this):
+		this.c = ['hydra', 'aqua', 'phobie']
+
+	def run(this):
+		this.chooseCenters()
+		this.updateDistances()
+		this.pointsToClusters()

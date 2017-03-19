@@ -27,8 +27,7 @@ filesManagment.write_centers('centers.csv', A.c)
 
 data = filesManagment.FileManager(dataType='words')
 data.read('words.txt')
-print(data.data)
 
-A = BaseWords(data.data, 2, 1)
+A = BaseWords(data.data, 3, 1)
 A.run()
 print(A.C)
