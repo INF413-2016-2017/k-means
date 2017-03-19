@@ -1,6 +1,7 @@
 Use instructions
 ----------------
-In the file main.py, choose the desired parameters (generate_random_data).
+Install the distance package, for instance using pip: pip install distance. 
+In the file main.py, choose the desired parameters (generate_random_data).  
 
 
 Notations
@@ -27,4 +28,5 @@ Todo
 -Closing file after write: error.  
 -Add command line args  
 -Cluster size and number of iterations.
--Show different iterations.  
+-Display different iterations.  
+-Add more data input

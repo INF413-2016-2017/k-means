@@ -2,6 +2,7 @@
 
 from utilities import *
 import numpy as np
+import distance
 
 
 class Algorithm(object):
@@ -31,19 +32,6 @@ class Algorithm(object):
 			for i in range(this.k):
 				this.L[p][i] = this.distance(this.c[i], p)
 
-	def distance(this, X, Y):
-		"""
-			Returns the euclidean distance between X and Y. No sqrt applied.
-			X and Y are tuples of the same dimension.
-		"""
-		if len(X)!=this.d or len(Y) != this.d:
-			raise Exception("Wrong dimension")
-		else:
-			distance = 0
-			for i in range(this.d):
-				distance += (X[i]-Y[i])**2
-			return distance
-
 	def run(this):
 		this.chooseCenters()
 		this.updateDistances()
@@ -61,6 +49,19 @@ class Base(Algorithm):
 		super(Base, this).__init__(data, nClusters, dimension)
 		this.iter = 0
 		this.max_iter = max_iter
+
+	def distance(this, X, Y):
+		"""
+			Returns the euclidean distance between X and Y. No sqrt applied.
+			X and Y are tuples of the same dimension.
+		"""
+		if len(X)!=this.d or len(Y) != this.d:
+			raise Exception("Wrong dimension")
+		else:
+			distance = 0
+			for i in range(this.d):
+				distance += (X[i]-Y[i])**2
+			return distance
 
 	def pointsToClusters(this):
 	    """
@@ -109,3 +110,16 @@ class BaseStopUnchanged(Base):
 
 	def hasChanged(this):
 		return this.C_former != this.C
+
+class BaseWords(Base):
+	def __init__(this, data, nClusters, dimension, max_iter=10):
+		super(BaseWords, this).__init__(data, nClusters, dimension)
+		this.iter = 0
+		this.max_iter = max_iter
+
+	def distance(this, X, Y):
+		"""
+			Returns the euclidean distance between X and Y.
+			X and Y are strings.
+		"""
+		return distance.levenshtein(X, Y, normalized=True)

@@ -4,7 +4,6 @@ from random import randint
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-
 def barycenter(L, d):
     """
         Return the coordinates of the barycenter of the tuples in the list L
