@@ -112,6 +112,8 @@ class BaseStopUnchanged(Base):
 	def hasChanged(this):
 		return this.C_former != this.C
 
+
+
 class BaseWords(Base):
 	def __init__(this, data, nClusters, dimension, max_iter=10):
 		super(BaseWords, this).__init__(data, nClusters, dimension)

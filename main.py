@@ -30,4 +30,7 @@ data.read('words.txt')
 
 A = BaseWords(data.data, 3, 1)
 A.run()
-print(A.C)
+for wList in A.C:
+	for w in wList:
+		print(w)
+	print()
