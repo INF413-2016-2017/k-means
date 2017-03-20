@@ -8,7 +8,10 @@ def display(C, c):
     if len(C[0][0]) == 2:
         for cluster in C:
             points = zip(*cluster)
-            plt.scatter(points[0], points[1])
+            plt.scatter(points[0], points[1], s=10)
+
+        for center in c:
+            plt.scatter(*center, marker='*', s=200, color='black')
         plt.show()
 
     elif len(C[0][0]) == 3:
@@ -17,7 +20,7 @@ def display(C, c):
 
         for cluster in C:
             points = zip(*cluster)
-            ax.scatter(points[0], points[1], points[2])
+            ax.scatter(points[0], points[1], points[2], s=10)
         plt.show()
 
     else:
