@@ -4,10 +4,10 @@
 import filesManagment
 from algorithms import *
 
-"""
-nPoints=2500
-dimension=3
-nClusters=3
+
+nPoints=500
+dimension=2
+nClusters=5
 
 data = filesManagment.generate_random_data(nPoints, dimension)
 filesManagment.write_data(data, "in.csv")
@@ -22,9 +22,9 @@ print(A.iter)
 
 filesManagment.write_solution('out.csv', A.C)
 filesManagment.write_centers('centers.csv', A.c)
+
+
 """
-
-
 data = filesManagment.FileManager(dataType='words')
 data.read('words.txt')
 
@@ -34,3 +34,4 @@ for wList in A.C:
 	for w in wList:
 		print(w)
 	print()
+"""

@@ -33,7 +33,7 @@ class Algorithm(object):
 				this.L[p][i] = this.distance(this.c[i], p)
 
 	def run(this):
-		this.chooseCenters()
+		this.chooseInitCenters()
 		this.updateDistances()
 		this.pointsToClusters()
 
@@ -72,7 +72,7 @@ class Base(Algorithm):
 	    for p in this.L.keys():
 	        this.C[np.argmin(this.L[p])].append(p)
 
-	def chooseCenters(this):
+	def chooseInitCenters(this):
 		"""
 			Choose k centers among the points in p randomly.
 		"""
@@ -127,10 +127,10 @@ class BaseWords(Base):
 		"""
 		return distance.levenshtein(X, Y, normalized=True)
 
-	def chooseCenters(this):
+	def chooseInitCenters(this):
 		this.c = ['hydra', 'aqua', 'phobie']
 
 	def run(this):
-		this.chooseCenters()
+		this.chooseInitCenters()
 		this.updateDistances()
 		this.pointsToClusters()
