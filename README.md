@@ -1,7 +1,7 @@
 Use instructions
 ----------------
-Install the distance package, for instance using pip: pip install distance. 
-In the file main.py, choose the desired parameters (generate_random_data).  
+Install the **distance** package, for instance using pip: _pip install distance_.  
+In the file main.py, choose the desired parameters.  
 
 
 Notations

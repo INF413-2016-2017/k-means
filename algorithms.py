@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from utilities import *
+from random import randint
 import numpy as np
 import distance
 
@@ -15,13 +15,32 @@ class Algorithm(object):
         this.L = []
         this.C = []
 
+    def barycenter(this, L, d):
+        """
+            Return the coordinates of the barycenter of the tuples in the list L
+        """
+        n = len(L)
+        B = [0 for k in range(d)]
+
+        for point in L:
+            for i in range(d):
+                B[i] += point[i]
+
+        B = map(lambda x: x / n, B)
+        return tuple(B)
+
     def updateCenters(this):
         # For each cluster, compute the new center
-        for i in range(this.k):
-            # Return the closest point to the barycenter in this.C[i].
-            B = barycenter(this.C[i], this.d)
-            distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
-            this.c[i] = this.C[i][np.argmin(distances)]
+        if this.dataType == 'points':
+            for i in range(this.k):
+                # Return the closest point to the barycenter in this.C[i].
+                B = this.barycenter(this.C[i], this.d)
+                distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
+                this.c[i] = this.C[i][np.argmin(distances)]
+        elif this.dataType == 'words':
+            pass
+        else:
+            raise Exception("Data type not implemented")
 
     def updateDistances(this):
         pLeft = this.p - set(this.c)
@@ -44,23 +63,33 @@ class Algorithm(object):
 
 
 class Base(Algorithm):
-    def __init__(this, data, nClusters, dimension, max_iter=10):
+    def __init__(this, data, nClusters, dimension, max_iter=10, dataType='points'):
         super(Base, this).__init__(data, nClusters, dimension)
         this.iter = 0
         this.max_iter = max_iter
+        this.dataType = dataType
 
     def distance(this, X, Y):
-        """
-			Returns the euclidean distance between X and Y. No sqrt applied.
-			X and Y are tuples of the same dimension.
-		"""
-        if len(X) != this.d or len(Y) != this.d:
-            raise Exception("Wrong dimension")
+        if this.dataType == 'points':
+            """
+                Returns the euclidean distance between X and Y. No sqrt applied.
+                X and Y are tuples of the same dimension.
+            """
+            if len(X) != this.d or len(Y) != this.d:
+                raise Exception("Wrong dimension")
+            else:
+                distance = 0
+                for i in range(this.d):
+                    distance += (X[i] - Y[i]) ** 2
+                return distance
+        elif this.dataType == 'words':
+            """
+                Returns the Levenshtein distance between X and Y.
+                X and Y are strings.
+            """
+            return distance.levenshtein(X, Y, normalized=True)
         else:
-            distance = 0
-            for i in range(this.d):
-                distance += (X[i] - Y[i]) ** 2
-            return distance
+            raise Exception("Data type not implemented")
 
     def pointsToClusters(this):
         """
@@ -73,14 +102,18 @@ class Base(Algorithm):
             this.C[np.argmin(this.L[p])].append(p)
 
     def chooseInitCenters(this):
-        """
-			Choose k centers among the points in p randomly.
-		"""
-        this.c = []
-        pTmp = list(this.p)
-        # print(pTmp)
-        for i in range(this.k):
-            this.c.append(pTmp.pop(randint(0, this.n - 1)))
+        if this.dataType == 'points':
+            """
+                Choose k centers among the points in p randomly.
+            """
+            this.c = []
+            pTmp = list(this.p)
+            # print(pTmp)
+            for i in range(this.k):
+                this.c.append(pTmp.pop(randint(0, this.n - 1)))
+        else:
+            # FIXME: choose random words
+            this.c = ['aquarium', 'aquatique']
 
     def stopCondition(this):
         this.iter += 1
@@ -109,25 +142,3 @@ class BaseStopUnchanged(Base):
 
     def hasChanged(this):
         return this.C_former != this.C
-
-
-class BaseWords(Base):
-    def __init__(this, data, nClusters, dimension, max_iter=10):
-        super(BaseWords, this).__init__(data, nClusters, dimension)
-        this.iter = 0
-        this.max_iter = max_iter
-
-    def distance(this, X, Y):
-        """
-			Returns the euclidean distance between X and Y.
-			X and Y are strings.
-		"""
-        return distance.levenshtein(X, Y, normalized=True)
-
-    def chooseInitCenters(this):
-        this.c = ['aquarium', 'aquatique']
-
-    def run(this):
-        this.chooseInitCenters()
-        this.updateDistances()
-        this.pointsToClusters()
