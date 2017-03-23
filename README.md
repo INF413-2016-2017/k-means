@@ -17,18 +17,20 @@ Archive name
 ------------
 TP1_Gardin_Garet_INF413_2016_2017_A
 
-
-Todo
-----
--Use numpy instead of list/tuples.  
+Questions
+---------
 -Bibliographie  
--Faire des recherches  
--Revoir les notations: s'aligner sur l'enoncé  
+-Faire des recherches
 -Choix de la distance.
 -Choix des centres initiaux (voir les pdf)  
 -Choix du critère d'arrêt  
 -Choix du nombre de centres (à voir, cela peut dépendre de l'utilisation)  
--Study complexity  
+
+Todo
+----
+-Use numpy instead of list/tuples.   
+-Revoir les notations: s'aligner sur l'enoncé  
+-Add complexity counter.  
 -Closing file after write: error.  
 -Add command line args  
 -Cluster size and number of iterations.  
