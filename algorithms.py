@@ -22,7 +22,7 @@ class Algorithm(object):
         this.C = []
         this.distance = distance
 
-    def barycenter(this, L, d):
+    def average(this, L, d):
         """
             Return the coordinates of the barycenter of the tuples in the list L
         """
@@ -78,7 +78,7 @@ class Base(Algorithm):
         if this.dataType == 'points':
             for i in range(this.k):
                 # Return the closest point to the barycenter in this.C[i].
-                B = this.barycenter(this.C[i], this.d)
+                B = this.average(this.C[i], this.d)
                 distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
                 this.c[i] = this.C[i][np.argmin(distances)]
         elif this.dataType == 'words':
