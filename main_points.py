@@ -14,12 +14,11 @@ nClusters = 8
 data = filesManagment.generate_random_data(nPoints, dimension)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
-
 D = Distance()
+
 A = Base(p, nClusters, D.euclidean, 3)
-
-
 A.run()
+
 display(A.C, A.c)
 
 filesManagment.write_solution('out.csv', A.C)

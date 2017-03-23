@@ -37,6 +37,7 @@ class Algorithm(object):
 
             B = map(lambda x: x / n, B)
             return tuple(B)
+
         elif dataType == 'words':
             """
                 Return the average word from the list of words.
@@ -105,17 +106,14 @@ class Base(Algorithm):
 
 
     def chooseInitCenters(this):
-        if this.dataType == 'points':
-            """
-                Choose k centers among the points in p randomly.
-            """
-            this.c = []
-            pTmp = list(this.p)
-            for i in range(this.k):
-                this.c.append(pTmp.pop(randint(0, this.n - 1)))
-        else:
-            # FIXME: choose random words
-            this.c = ['aquarium', 'aquatique']
+        """
+            Choose k centers among p randomly.
+        """
+        this.c = []
+        pTmp = list(this.p)
+        for i in range(this.k):
+            this.c.append(pTmp.pop(randint(0, this.n - 1)))
+
 
     def stopCondition(this):
         this.iter += 1

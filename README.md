@@ -17,6 +17,7 @@ Archive name
 ------------
 TP1_Gardin_Garet_INF413_2016_2017_A
 
+
 Questions
 ---------
 -Bibliographie  
@@ -25,6 +26,7 @@ Questions
 -Choix des centres initiaux (voir les pdf)  
 -Choix du critère d'arrêt  
 -Choix du nombre de centres (à voir, cela peut dépendre de l'utilisation)  
+
 
 Todo
 ----
