@@ -20,7 +20,6 @@ TP1_Gardin_Garet_INF413_2016_2017_A
 
 Todo
 ----
--Write data back to files: remove whitespaces.  
 -Use numpy instead of list/tuples.  
 -Bibliographie  
 -Faire des recherches  
@@ -39,4 +38,3 @@ Todo
 -Follow pep conventions.  
 -Improve file managment.  
 -Display better the results using words.  
--Need for dimension?  

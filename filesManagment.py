@@ -105,7 +105,6 @@ def generate_random_data(nb_objs, nb_attrs, frand=random.random):
 
 
 def write_solution(filename, solution):
-    # TODO: remove whitespaces.
     f = open(filename, 'w')
 
     k = 1  # Cluster index
@@ -114,7 +113,7 @@ def write_solution(filename, solution):
     for cluster in solution:
         for point in cluster:
             s = str(i) + ',' + str(point)[1:-1] + ',' + str(k)
-            s.replace(' ', '')  # Remove whitespaces
+            s = s.replace(' ', '')  # Remove whitespaces
             f.write(s + '\n')
             i += 1
         k += 1
@@ -122,14 +121,13 @@ def write_solution(filename, solution):
 
 
 def write_centers(filename, centers):
-    # TODO: remove whitespaces.
     f = open(filename, 'w')
 
     k = 1  # Center index
 
     for center in centers:
         s = str(k) + ',' + str(center)[1:-1]
-        s.replace(' ', '')  # Remove whitespaces
+        s = s.replace(' ', '')  # Remove whitespaces
         f.write(s + '\n')
         k += 1
     # f.close()
