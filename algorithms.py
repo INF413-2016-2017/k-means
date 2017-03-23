@@ -53,6 +53,8 @@ class Algorithm(object):
                 listChar = [w[k] for w in L]
                 averageWord[k] = Counter(listChar).most_common(1)[0][0]
 
+            return ''.join(w) # Convert to string
+
         else:
             raise Exception("Data type not implemented")
 
