@@ -2,11 +2,17 @@
 
 from random import randint
 import numpy as np
-import distance
 
 
 class Algorithm(object):
-    def __init__(this, data, nClusters, dimension):
+    def __init__(this, data, nClusters, dimension, distance):
+        """
+        Init function
+        :param data:
+        :param nClusters:
+        :param dimension:
+        :param distance: function that takes two arguments.
+        """
         this.p = set(data)
         this.n = len(data)
         this.k = nClusters
@@ -14,6 +20,7 @@ class Algorithm(object):
         this.c = []
         this.L = []
         this.C = []
+        this.distance = distance
 
     def barycenter(this, L, d):
         """
@@ -60,8 +67,8 @@ class Algorithm(object):
 
 
 class Base(Algorithm):
-    def __init__(this, data, nClusters, dimension, max_iter=10, dataType='points'):
-        super(Base, this).__init__(data, nClusters, dimension)
+    def __init__(this, data, nClusters, dimension, distance, max_iter=10, dataType='points'):
+        super(Base, this).__init__(data, nClusters, dimension, distance)
         this.iter = 0
         this.max_iter = max_iter
         this.dataType = dataType
@@ -76,28 +83,6 @@ class Base(Algorithm):
                 this.c[i] = this.C[i][np.argmin(distances)]
         elif this.dataType == 'words':
             pass
-        else:
-            raise Exception("Data type not implemented")
-
-    def distance(this, X, Y):
-        if this.dataType == 'points':
-            """
-                Returns the euclidean distance between X and Y. No sqrt applied.
-                X and Y are tuples of the same dimension.
-            """
-            if len(X) != this.d or len(Y) != this.d:
-                raise Exception("Wrong dimension")
-            else:
-                distance = 0
-                for i in range(this.d):
-                    distance += (X[i] - Y[i]) ** 2
-                return distance
-        elif this.dataType == 'words':
-            """
-                Returns the Levenshtein distance between X and Y.
-                X and Y are strings.
-            """
-            return distance.levenshtein(X, Y, normalized=True)
         else:
             raise Exception("Data type not implemented")
 
