@@ -32,7 +32,7 @@ class FileManager:
 
 
 def read_data(filename, skip_first_line=False, ignore_first_column=False):
-    '''
+    """
     Loads data from a csv file and returns the corresponding list.
     All data are expected to be floats, except in the first column.
 
@@ -48,7 +48,7 @@ def read_data(filename, skip_first_line=False, ignore_first_column=False):
         Rows are returned in the same order as in the file.
         They contains floats, except for the 1st element which is a string
         when the first column is not ignored.
-    '''
+    """
 
     f = open(filename, 'r')
     if skip_first_line:
@@ -66,14 +66,14 @@ def read_data(filename, skip_first_line=False, ignore_first_column=False):
 
 
 def write_data(data, filename):
-    '''
+    """
     Writes data in a csv file.
 
     @param data: a list of lists
 
     @param filename: the path of the file in which data is written.
         The file is created if necessary; if it exists, it is overwritten.
-    '''
+    """
     # If you're curious, look at python's module csv instead, which offers
     # more powerful means to write (and read!) csv files.
     f = open(filename, 'w')
@@ -84,7 +84,7 @@ def write_data(data, filename):
 
 
 def generate_random_data(nb_objs, nb_attrs, frand=random.random):
-    '''
+    """
     Generates a matrix of random data.
 
     @param frand: the fonction used to generate random values.
@@ -96,7 +96,7 @@ def generate_random_data(nb_objs, nb_attrs, frand=random.random):
 
     @return: a matrix with nb_objs rows and nb_attrs+1 columns. The 1st
         column is filled with line numbers (integers, from 1 to nb_objs).
-    '''
+    """
     data = []
     for i in range(nb_objs):
         line = [i + 1] + map(lambda x: frand(), range(nb_attrs))

@@ -25,3 +25,7 @@ def display(C, c):
 
     else:
         raise Exception("Wrong dimension")
+
+class Distance:
+    def __init__(this, distanceType='points'):
+        pass

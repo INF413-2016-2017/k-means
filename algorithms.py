@@ -29,19 +29,6 @@ class Algorithm(object):
         B = map(lambda x: x / n, B)
         return tuple(B)
 
-    def updateCenters(this):
-        # For each cluster, compute the new center
-        if this.dataType == 'points':
-            for i in range(this.k):
-                # Return the closest point to the barycenter in this.C[i].
-                B = this.barycenter(this.C[i], this.d)
-                distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
-                this.c[i] = this.C[i][np.argmin(distances)]
-        elif this.dataType == 'words':
-            pass
-        else:
-            raise Exception("Data type not implemented")
-
     def updateDistances(this):
         pLeft = this.p - set(this.c)
         this.L = {}
@@ -50,6 +37,16 @@ class Algorithm(object):
             this.L[p] = [0 for i in range(this.k)]
             for i in range(this.k):
                 this.L[p][i] = this.distance(this.c[i], p)
+
+    def pointsToClusters(this):
+        """
+            Assign points to the cluster of the closest center.
+        """
+        this.C = [[this.c[i]] for i in
+                  range(this.k)]  # C[i] is the list of points in cluster i. Add the center in the list.
+
+        for p in this.L.keys():
+            this.C[np.argmin(this.L[p])].append(p)
 
     def run(this):
         this.chooseInitCenters()
@@ -68,6 +65,19 @@ class Base(Algorithm):
         this.iter = 0
         this.max_iter = max_iter
         this.dataType = dataType
+
+    def updateCenters(this):
+        # For each cluster, compute the new center
+        if this.dataType == 'points':
+            for i in range(this.k):
+                # Return the closest point to the barycenter in this.C[i].
+                B = this.barycenter(this.C[i], this.d)
+                distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
+                this.c[i] = this.C[i][np.argmin(distances)]
+        elif this.dataType == 'words':
+            pass
+        else:
+            raise Exception("Data type not implemented")
 
     def distance(this, X, Y):
         if this.dataType == 'points':
@@ -91,16 +101,6 @@ class Base(Algorithm):
         else:
             raise Exception("Data type not implemented")
 
-    def pointsToClusters(this):
-        """
-	        Assign points to the cluster of the closest center.
-	    """
-        this.C = [[this.c[i]] for i in
-                  range(this.k)]  # C[i] is the list of points in cluster i. Add the center in the list.
-
-        for p in this.L.keys():
-            this.C[np.argmin(this.L[p])].append(p)
-
     def chooseInitCenters(this):
         if this.dataType == 'points':
             """
@@ -108,7 +108,6 @@ class Base(Algorithm):
             """
             this.c = []
             pTmp = list(this.p)
-            # print(pTmp)
             for i in range(this.k):
                 this.c.append(pTmp.pop(randint(0, this.n - 1)))
         else:
@@ -122,8 +121,8 @@ class Base(Algorithm):
 
 class BaseStopUnchanged(Base):
     """
-		Base algorithm, but stops when no points moved from a cluster for more than max_iter.
-	"""
+        Base algorithm, but stops when no points moved from a cluster for more than max_iter.
+    """
 
     def __init__(this, data, nClusters, dimension, max_iter=10):
         super(BaseStopUnchanged, this).__init__(data, nClusters, dimension, max_iter)

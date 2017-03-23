@@ -1,7 +1,10 @@
 Use instructions
 ----------------
 Install the **distance** package, for instance using pip: _pip install distance_.  
+To use the algorithms on words instead of points, use the option dataType='points' 
+or dataType='words' in the instantiation of the class.  
 In the file main.py, choose the desired parameters.  
+The programs currently work only on _python 2.7_  
 
 
 Notations
@@ -29,7 +32,7 @@ Todo
 -Study complexity  
 -Closing file after write: error.  
 -Add command line args  
--Cluster size and number of iterations.
+-Cluster size and number of iterations.  
 -Display different iterations.  
--Add more data input
--Add ponderation for euclidean distance
+-Add more data input.  
+-Add ponderation for euclidean distance.  
