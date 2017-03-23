@@ -6,7 +6,7 @@ import numpy as np
 
 
 class Algorithm(object):
-    def __init__(this, data, nClusters, dimension, distance):
+    def __init__(this, data, nClusters, distance):
         """
         Init function
         :param data:
@@ -17,18 +17,18 @@ class Algorithm(object):
         this.p = set(data)
         this.n = len(data)
         this.k = nClusters
-        this.d = dimension
         this.c = []
         this.L = []
         this.C = []
         this.distance = distance
 
-    def average(this, L, d, dataType):
+    def average(this, L, dataType):
         if dataType == 'points':
             """
                 Return the coordinates of the barycenter of the tuples in the list L
             """
             n = len(L)
+            d = len(L[0]) # Number of coordinates
             B = [0 for k in range(d)]
 
             for point in L:
@@ -89,8 +89,8 @@ class Algorithm(object):
 
 
 class Base(Algorithm):
-    def __init__(this, data, nClusters, dimension, distance, max_iter=10, dataType='points'):
-        super(Base, this).__init__(data, nClusters, dimension, distance)
+    def __init__(this, data, nClusters, distance, max_iter=10, dataType='points'):
+        super(Base, this).__init__(data, nClusters, distance)
         this.iter = 0
         this.max_iter = max_iter
         this.dataType = dataType
@@ -99,7 +99,7 @@ class Base(Algorithm):
         # For each cluster, compute the new center
         for i in range(this.k):
             # Return the closest point to the average in this.C[i].
-            B = this.average(this.C[i], this.d, this.dataType)
+            B = this.average(this.C[i], this.dataType)
             distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
             this.c[i] = this.C[i][np.argmin(distances)]
 
@@ -127,8 +127,8 @@ class BaseStopUnchanged(Base):
         Base algorithm, but stops when no points moved from a cluster for more than max_iter.
     """
 
-    def __init__(this, data, nClusters, dimension, max_iter=10):
-        super(BaseStopUnchanged, this).__init__(data, nClusters, dimension, max_iter)
+    def __init__(this, data, nClusters, max_iter=10):
+        super(BaseStopUnchanged, this).__init__(data, nClusters, max_iter)
         this.iter_stop = 0
         this.C_former = []
 

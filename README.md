@@ -37,3 +37,6 @@ Todo
 -Add more data input.  
 -Add ponderation for euclidean distance.  
 -Follow pep conventions.  
+-Improve file managment.  
+-Display better the results using words.  
+-Need for dimension?  
