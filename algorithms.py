@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from random import randint
+from collections import Counter
 import numpy as np
 
 
@@ -22,19 +23,38 @@ class Algorithm(object):
         this.C = []
         this.distance = distance
 
-    def average(this, L, d):
-        """
-            Return the coordinates of the barycenter of the tuples in the list L
-        """
-        n = len(L)
-        B = [0 for k in range(d)]
+    def average(this, L, d, dataType):
+        if dataType == 'points':
+            """
+                Return the coordinates of the barycenter of the tuples in the list L
+            """
+            n = len(L)
+            B = [0 for k in range(d)]
 
-        for point in L:
-            for i in range(d):
-                B[i] += point[i]
+            for point in L:
+                for i in range(d):
+                    B[i] += point[i]
 
-        B = map(lambda x: x / n, B)
-        return tuple(B)
+            B = map(lambda x: x / n, B)
+            return tuple(B)
+        elif dataType == 'words':
+            """
+                Return the average word from the list of words.
+            """
+            maxLength = max(map(len, L))
+            averageWord = ['' for k in range(maxLength)]
+
+            # Make all the words the same length
+            for i in range(len(L)):
+                n = len(L[i])
+                L[i] = L[i] + (maxLength - n) * ' '
+
+            for k in range(maxLength):
+                listChar = [w[k] for w in L]
+                averageWord[k] = Counter(listChar).most_common(1)[0][0]
+
+        else:
+            raise Exception("Data type not implemented")
 
     def updateDistances(this):
         pLeft = this.p - set(this.c)
@@ -75,16 +95,12 @@ class Base(Algorithm):
 
     def updateCenters(this):
         # For each cluster, compute the new center
-        if this.dataType == 'points':
-            for i in range(this.k):
-                # Return the closest point to the barycenter in this.C[i].
-                B = this.average(this.C[i], this.d)
-                distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
-                this.c[i] = this.C[i][np.argmin(distances)]
-        elif this.dataType == 'words':
-            pass
-        else:
-            raise Exception("Data type not implemented")
+        for i in range(this.k):
+            # Return the closest point to the average in this.C[i].
+            B = this.average(this.C[i], this.d, this.dataType)
+            distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
+            this.c[i] = this.C[i][np.argmin(distances)]
+
 
     def chooseInitCenters(this):
         if this.dataType == 'points':

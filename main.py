@@ -7,7 +7,7 @@ from utilities import *
 
 
 """ Points test """
-nPoints = 500
+nPoints = 5000
 dimension = 2
 nClusters = 8
 
@@ -21,8 +21,6 @@ A = Base(p, nClusters, dimension, D.euclidean, 3)
 
 A.run()
 display(A.C, A.c)
-
-print(A.iter)
 
 filesManagment.write_solution('out.csv', A.C)
 filesManagment.write_centers('centers.csv', A.c)

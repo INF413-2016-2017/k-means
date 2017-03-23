@@ -36,3 +36,4 @@ Todo
 -Display different iterations.  
 -Add more data input.  
 -Add ponderation for euclidean distance.  
+-Follow pep conventions.  
