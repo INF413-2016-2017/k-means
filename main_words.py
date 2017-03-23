@@ -6,16 +6,17 @@ from algorithms import *
 from utilities import *
 
 
+""" Parameters """
+filename = 'words.txt'
+k = 2
+
+
 """ Words test """
 data = filesManagment.FileManager(dataType='words')
-data.read('words.txt')
+data.read(filename)
 D = Distance()
 
-A = Base(data.data, 3, D.levenshtein,  dataType='words')
+A = Base(data.data, k, D.levenshtein,  dataType='words')
 A.run()
 
-
-for wList in A.C:
-    for w in wList:
-		print(w)
-    print()
+displayWords(A.C)

@@ -26,6 +26,7 @@ Questions
 -Choix des centres initiaux (voir les pdf)  
 -Choix du critère d'arrêt  
 -Choix du nombre de centres (à voir, cela peut dépendre de l'utilisation)  
+-Cluster size and number of iterations.  
 
 
 Todo
@@ -34,11 +35,8 @@ Todo
 -Revoir les notations: s'aligner sur l'enoncé  
 -Add complexity counter.  
 -Closing file after write: error.  
--Add command line args  
--Cluster size and number of iterations.  
 -Display different iterations.  
 -Add more data input.  
 -Add ponderation for euclidean distance.  
 -Follow pep conventions.  
 -Improve file managment.  
--Display better the results using words.  

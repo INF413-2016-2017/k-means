@@ -7,7 +7,7 @@ import distance
 
 
 
-def display(C, c):
+def displayPoints(C, c):
     if len(C[0][0]) == 2:
         for cluster in C:
             points = zip(*cluster)
@@ -28,6 +28,13 @@ def display(C, c):
 
     else:
         raise Exception("Wrong dimension")
+
+def displayWords(C):
+    for wList in C:
+        for w in wList:
+            print(w)
+        print()
+
 
 class Distance:
     def __init__(this):
