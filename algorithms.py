@@ -8,10 +8,8 @@ import numpy as np
 class Algorithm(object):
     def __init__(this, data, nClusters, distance):
         """
-        Init function
-        :param data:
-        :param nClusters:
-        :param dimension:
+        :param data: list
+        :param nClusters: int
         :param distance: function that takes two arguments.
         """
         this.p = set(data)
@@ -60,6 +58,10 @@ class Algorithm(object):
             raise Exception("Data type not implemented")
 
     def updateDistances(this):
+        """
+        Updates the list of distances.
+        :return: None
+        """
         pLeft = this.p - set(this.c)
         this.L = {}
 
@@ -70,7 +72,8 @@ class Algorithm(object):
 
     def pointsToClusters(this):
         """
-            Assign points to the cluster of the closest center.
+        Assign points to the cluster of the closest center.
+        :return: None
         """
         this.C = [[this.c[i]] for i in
                   range(this.k)]  # C[i] is the list of points in cluster i. Add the center in the list.
@@ -79,6 +82,10 @@ class Algorithm(object):
             this.C[np.argmin(this.L[p])].append(p)
 
     def run(this):
+        """
+        Main loop of the algorithm
+        :return: None
+        """
         this.chooseInitCenters()
         this.updateDistances()
         this.pointsToClusters()
@@ -90,6 +97,9 @@ class Algorithm(object):
 
 
 class Base(Algorithm):
+    """
+    Regular k-means algorithm.
+    """
     def __init__(this, data, nClusters, distance, max_iter=10, dataType='points'):
         super(Base, this).__init__(data, nClusters, distance)
         this.iter = 0
@@ -97,6 +107,10 @@ class Base(Algorithm):
         this.dataType = dataType
 
     def updateCenters(this):
+        """
+        Choose new centers for each cluster.
+        :return: None
+        """
         # For each cluster, compute the new center
         for i in range(this.k):
             # Return the closest point to the average in this.C[i].
@@ -116,15 +130,18 @@ class Base(Algorithm):
 
 
     def stopCondition(this):
+        """
+        Stop the algorithm when more than max_iter have been made.
+        :return: boolean
+        """
         this.iter += 1
         return this.iter < this.max_iter
 
 
 class BaseStopUnchanged(Base):
     """
-        Base algorithm, but stops when no points moved from a cluster for more than max_iter.
+    Base algorithm, but stops when no points moved from a cluster for more than max_iter.
     """
-
     def __init__(this, data, nClusters, max_iter=10):
         super(BaseStopUnchanged, this).__init__(data, nClusters, max_iter)
         this.iter_stop = 0
@@ -141,4 +158,8 @@ class BaseStopUnchanged(Base):
             return this.iter_stop < this.max_iter
 
     def hasChanged(this):
+        """
+        Indicated if a point changed of cluster.
+        :return: boolean
+        """
         return this.C_former != this.C

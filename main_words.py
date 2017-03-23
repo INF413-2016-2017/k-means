@@ -8,7 +8,7 @@ from utilities import *
 
 """ Parameters """
 filename = 'words.txt'
-k = 2
+k = 3
 
 
 """ Words test """

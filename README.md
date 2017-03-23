@@ -40,3 +40,4 @@ Todo
 -Add ponderation for euclidean distance.  
 -Follow pep conventions.  
 -Improve file managment.  
+-Comment.  

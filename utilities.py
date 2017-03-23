@@ -8,6 +8,12 @@ import distance
 
 
 def displayPoints(C, c):
+    """
+    Display the cluster using a different color for each cluster.
+    :param C:
+    :param c:
+    :return: None
+    """
     if len(C[0][0]) == 2:
         for cluster in C:
             points = zip(*cluster)
@@ -30,13 +36,19 @@ def displayPoints(C, c):
         raise Exception("Wrong dimension")
 
 def displayWords(C):
+    """
+    Display the cluster of words.
+    :param C:
+    :return: None
+    """
     for wList in C:
-        for w in wList:
-            print(w)
-        print()
+        print(wList)
 
 
 class Distance:
+    """
+    Implements the different distances available.
+    """
     def __init__(this):
         def euclidean(X, Y):
             """
