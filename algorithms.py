@@ -12,6 +12,7 @@ class Algorithm(object):
         :param nClusters: int
         :param distance: function that takes two arguments.
         """
+        #FIXME: Add comments.
         this.p = set(data)
         this.n = len(data)
         this.k = nClusters
@@ -33,6 +34,7 @@ class Algorithm(object):
                 for i in range(d):
                     B[i] += point[i]
 
+            #FIXME: add comments or change method.
             B = map(lambda x: x / n, B)
             return tuple(B)
 
@@ -44,12 +46,13 @@ class Algorithm(object):
             averageWord = ['' for k in range(maxLength)]
 
             # Make all the words the same length
+            #FIXME: add comments
             for i in range(len(L)):
                 n = len(L[i])
                 L[i] = L[i] + (maxLength - n) * ' '
 
             for k in range(maxLength):
-                listChar = [w[k] for w in L]
+                listChar = [w[k] for w in L]  # List of k-th characters in each word.
                 averageWord[k] = Counter(listChar).most_common(1)[0][0]
 
             return ''.join(w)  # Convert to string
@@ -75,8 +78,7 @@ class Algorithm(object):
         Assign points to the cluster of the closest center.
         :return: None
         """
-        this.C = [[this.c[i]] for i in
-                  range(this.k)]  # C[i] is the list of points in cluster i. Add the center in the list.
+        this.C = [[this.c[i]] for i in range(this.k)]  # C[i] is the list of points in cluster i. Add the center in the list.
 
         for p in this.L.keys():
             this.C[np.argmin(this.L[p])].append(p)
@@ -113,7 +115,7 @@ class Base(Algorithm):
         """
         for i in range(this.k):
             # Return the closest point to the average in this.C[i].
-            B = this.average(this.C[i], this.dataType)
+            B = this.average(this.C[i], this.dataType)  # Barycenter for points, else average word
             distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
             this.c[i] = this.C[i][np.argmin(distances)]
 
@@ -151,6 +153,7 @@ class BaseStopUnchanged(Base):
         Stop the algorithm when no points moved from a cluster for more than max_iter.
         :return: boolean
         """
+        # FIXME: check if useful
         this.iter += 1
         if this.hasChanged():
             this.iter_stop = 0
@@ -165,6 +168,7 @@ class BaseStopUnchanged(Base):
         Indicated if a point changed of cluster.
         :return: boolean
         """
+        # FIXME: use c instead of C ?
         return this.C_former != this.C
 
 class Base2(Base):
@@ -180,4 +184,14 @@ class Base2(Base):
         :return: None.
         """
         for i in range(this.k):
-            this.c[i] = this.average(this.C[i], this.dataType)
+            this.c[i] = this.average(this.C[i], this.dataType) # Barycenter of average word
+
+    def pointsToClusters(this):
+        """
+        Assign points to the cluster of the closest center.
+        :return: None
+        """
+        this.C = [[] for i in range(this.k)]  # C[i] is the list of points in cluster i.
+
+        for p in this.L.keys():
+            this.C[np.argmin(this.L[p])].append(p)
