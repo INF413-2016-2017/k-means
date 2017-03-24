@@ -26,7 +26,7 @@ Questions
 -Choix des centres initiaux (voir les pdf)  
 -Choix du critère d'arrêt  
 -Choix du nombre de centres (à voir, cela peut dépendre de l'utilisation)  
--Cluster size and number of iterations.  
+-Complexity: cluster size, nPoints.  
 
 
 Todo

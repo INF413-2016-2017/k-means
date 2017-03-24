@@ -7,9 +7,9 @@ from utilities import *
 
 
 """ Parameters """
-nPoints = 5000
-dimension = 3
-nClusters = 8
+nPoints = 2
+dimension = 2
+nClusters = 2
 
 
 """ Points test """
@@ -18,10 +18,7 @@ filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
 D = Distance()
 
-A = Base(p, nClusters, D.euclidean, iter_max=3)
+A = Base(p, nClusters, D.euclidean)
 A.run()
 
 displayPoints(A.C, A.c)
-
-filesManagment.write_solution('out.csv', A.C)
-filesManagment.write_centers('centers.csv', A.c)

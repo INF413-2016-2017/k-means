@@ -26,7 +26,7 @@ class Algorithm(object):
                 Return the coordinates of the barycenter of the tuples in the list L
             """
             n = len(L)
-            d = len(L[0]) # Number of coordinates
+            d = len(L[0])  # Number of coordinates
             B = [0 for k in range(d)]
 
             for point in L:
@@ -52,7 +52,7 @@ class Algorithm(object):
                 listChar = [w[k] for w in L]
                 averageWord[k] = Counter(listChar).most_common(1)[0][0]
 
-            return ''.join(w) # Convert to string
+            return ''.join(w)  # Convert to string
 
         else:
             raise Exception("Data type not implemented")
@@ -121,12 +121,12 @@ class Base(Algorithm):
 
     def chooseInitCenters(this):
         """
-            Choose k centers among p randomly.
+        Choose k centers among p randomly.
         """
         this.c = []
         pTmp = list(this.p)
         for i in range(this.k):
-            this.c.append(pTmp.pop(randint(0, this.n - 1)))
+            this.c.append(pTmp.pop(randint(0, len(pTmp) - 1)))
 
 
     def stopCondition(this):
