@@ -7,9 +7,9 @@ from utilities import *
 
 
 """ Parameters """
-nPoints = 10000
+nPoints = 5000
 dimension = 2
-nClusters = 4
+nClusters = 6
 D = Distance()
 
 
@@ -18,7 +18,7 @@ data = filesManagment.generate_random_data(nPoints, dimension)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
 
-A = Base(p, nClusters, D.euclidean, iter_max=3)
+A = Base2(p, nClusters, D.euclidean, iter_max=10)
 A.run()
 
 displayPoints(A.C, A.c)

@@ -108,10 +108,9 @@ class Base(Algorithm):
 
     def updateCenters(this):
         """
-        Choose new centers for each cluster.
+        Choose new center for each cluster.
         :return: None
         """
-        # For each cluster, compute the new center
         for i in range(this.k):
             # Return the closest point to the average in this.C[i].
             B = this.average(this.C[i], this.dataType)
@@ -167,3 +166,18 @@ class BaseStopUnchanged(Base):
         :return: boolean
         """
         return this.C_former != this.C
+
+class Base2(Base):
+    """
+    Regular k-means algorithm, but the centers are not in the dataset only barycenter.
+    """
+    def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
+        super(Base2, this).__init__(data, nClusters, distance, iter_max, dataType)
+
+    def updateCenters(this):
+        """
+        Choose a new center for each cluster.
+        :return: None.
+        """
+        for i in range(this.k):
+            this.c[i] = this.average(this.C[i], this.dataType)
