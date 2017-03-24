@@ -27,6 +27,7 @@ Questions
 -Choix du critère d'arrêt  
 -Choix du nombre de centres (à voir, cela peut dépendre de l'utilisation)  
 -Complexity: cluster size, nPoints.  
+-Test for algorithm quality.  
 
 
 Todo

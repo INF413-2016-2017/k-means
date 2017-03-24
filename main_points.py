@@ -7,16 +7,16 @@ from utilities import *
 
 
 """ Parameters """
-nPoints = 5000
-dimension = 3
-nClusters = 8
+nPoints = 10000
+dimension = 2
+nClusters = 4
+D = Distance()
 
 
 """ Points test """
 data = filesManagment.generate_random_data(nPoints, dimension)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
-D = Distance()
 
 A = Base(p, nClusters, D.euclidean, iter_max=3)
 A.run()
