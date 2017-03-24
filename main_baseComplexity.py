@@ -9,17 +9,17 @@ import matplotlib.pyplot as plt
 
 
 """ Parameters """
-nPointsMin, nPointsMax = 500, 500
-iterNumber = 10
+nPointsMin, nPointsMax = 500, 5000
+step = 20
+iterNumber = 25
 dimension = 2
 nClusters = 5
 D = Distance()
 times = []
 
 """ Complexity test for nPoints """
-for nPoints in range(nPointsMin, nPointsMax):
+for nPoints in range(nPointsMin, nPointsMax, iterNumber):
     avgTime = 0
-    print(nPoints)
 
     for iter in range(iterNumber):
         data = filesManagment.generate_random_data(nPoints, dimension)
@@ -33,7 +33,7 @@ for nPoints in range(nPointsMin, nPointsMax):
 
     times.append(avgTime/iterNumber)
 
-plt.plot(range(nPointsMin, nPointsMax), times)
+plt.plot(range(nPointsMin, nPointsMax, iterNumber), times)
 plt.xlabel('Nombre de points')
 plt.ylabel('Temps en secondes')
 plt.show()
@@ -42,17 +42,16 @@ plt.show()
 
 
 """ Parameters """
-nPoints = 500
+nPoints = 2000
 iterNumber = 2
 dimension = 2
-nClustersMin, nClusterMax = 2, 5
+nClustersMin, nClusterMax = 2, 100
 D = Distance()
 times = []
 
 """ Complexity test for nCluster """
 for nCluster in range(nClustersMin, nClusterMax):
     avgTime = 0
-    print(nCluster)
 
     for iter in range(iterNumber):
         data = filesManagment.generate_random_data(nPoints, dimension)
