@@ -100,10 +100,10 @@ class Base(Algorithm):
     """
     Regular k-means algorithm.
     """
-    def __init__(this, data, nClusters, distance, max_iter=10, dataType='points'):
+    def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
         super(Base, this).__init__(data, nClusters, distance)
         this.iter = 0
-        this.max_iter = max_iter
+        this.iter_max = iter_max
         this.dataType = dataType
 
     def updateCenters(this):
@@ -135,19 +135,23 @@ class Base(Algorithm):
         :return: boolean
         """
         this.iter += 1
-        return this.iter < this.max_iter
+        return this.iter < this.iter_max
 
 
 class BaseStopUnchanged(Base):
     """
     Base algorithm, but stops when no points moved from a cluster for more than max_iter.
     """
-    def __init__(this, data, nClusters, max_iter=10):
-        super(BaseStopUnchanged, this).__init__(data, nClusters, max_iter)
+    def __init__(this, data, nClusters, iter_max=10):
+        super(BaseStopUnchanged, this).__init__(data, nClusters, iter_max)
         this.iter_stop = 0
         this.C_former = []
 
     def stopCondition(this):
+        """
+        Stop the algorithm when no points moved from a cluster for more than max_iter.
+        :return: boolean
+        """
         this.iter += 1
         if this.hasChanged():
             this.iter_stop = 0
@@ -155,7 +159,7 @@ class BaseStopUnchanged(Base):
             return True
         else:
             this.iter_stop += 1
-            return this.iter_stop < this.max_iter
+            return this.iter_stop < this.iter_max
 
     def hasChanged(this):
         """
