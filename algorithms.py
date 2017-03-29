@@ -73,16 +73,6 @@ class Algorithm(object):
             for i in range(this.k):
                 this.L[p][i] = this.distance(this.c[i], p)
 
-    def pointsToClusters(this):
-        """
-        Assign points to the cluster of the closest center.
-        :return: None
-        """
-        this.C = [[this.c[i]] for i in range(this.k)]  # C[i] is the list of points in cluster i. Add the center in the list.
-
-        for p in this.L.keys():
-            this.C[np.argmin(this.L[p])].append(p)
-
     def run(this):
         """
         Main loop of the algorithm
@@ -103,22 +93,10 @@ class Base(Algorithm):
     Regular k-means algorithm.
     """
     def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
-        super(Base, this).__init__(data, nClusters, distance)
+        super(Base2, this).__init__(data, nClusters, distance, iter_max, dataType)
         this.iter = 0
         this.iter_max = iter_max
         this.dataType = dataType
-
-    def updateCenters(this):
-        """
-        Choose new center for each cluster.
-        :return: None
-        """
-        for i in range(this.k):
-            # Return the closest point to the average in this.C[i].
-            B = this.average(this.C[i], this.dataType)  # Barycenter for points, else average word
-            distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
-            this.c[i] = this.C[i][np.argmin(distances)]
-
 
     def chooseInitCenters(this):
         """
@@ -129,7 +107,6 @@ class Base(Algorithm):
         for i in range(this.k):
             this.c.append(pTmp.pop(randint(0, len(pTmp) - 1)))
 
-
     def stopCondition(this):
         """
         Stop the algorithm when more than max_iter have been made.
@@ -137,6 +114,53 @@ class Base(Algorithm):
         """
         this.iter += 1
         return this.iter < this.iter_max
+
+    def updateCenters(this):
+        """
+        Choose a new center for each cluster.
+        :return: None.
+        """
+        for i in range(this.k):
+            this.c[i] = this.average(this.C[i], this.dataType) # Barycenter of average word
+
+    def pointsToClusters(this):
+        """
+        Assign points to the cluster of the closest center.
+        :return: None
+        """
+        this.C = [[] for i in range(this.k)]  # C[i] is the list of points in cluster i.
+
+        for p in this.L.keys():
+            this.C[np.argmin(this.L[p])].append(p)
+
+
+class Base(Base):
+    """
+    Regular k-means algorithm, but use a point belong to the cluster as a center.
+    """
+    def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
+        super(Base, this).__init__(data, nClusters, distance)
+
+    def updateCenters(this):
+        """
+        Choose new center for each cluster. Compute the average, then chose the closest to the average.
+        :return: None
+        """
+        for i in range(this.k):
+            # Return the closest point to the average in this.C[i].
+            B = this.average(this.C[i], this.dataType)  # Barycenter for points, else average word
+            distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
+            this.c[i] = this.C[i][np.argmin(distances)]
+
+    def pointsToClusters(this):
+        """
+        Assign points to the cluster of the closest center.
+        :return: None
+        """
+        this.C = [[this.c[i]] for i in range(this.k)]  # C[i] is the list of points in cluster i. Add the center in the list.
+
+        for p in this.L.keys():
+            this.C[np.argmin(this.L[p])].append(p)
 
 
 class BaseStopUnchanged(Base):
@@ -170,28 +194,3 @@ class BaseStopUnchanged(Base):
         """
         # FIXME: use c instead of C ?
         return this.C_former != this.C
-
-class Base2(Base):
-    """
-    Regular k-means algorithm, but the centers are not in the dataset only barycenter.
-    """
-    def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
-        super(Base2, this).__init__(data, nClusters, distance, iter_max, dataType)
-
-    def updateCenters(this):
-        """
-        Choose a new center for each cluster.
-        :return: None.
-        """
-        for i in range(this.k):
-            this.c[i] = this.average(this.C[i], this.dataType) # Barycenter of average word
-
-    def pointsToClusters(this):
-        """
-        Assign points to the cluster of the closest center.
-        :return: None
-        """
-        this.C = [[] for i in range(this.k)]  # C[i] is the list of points in cluster i.
-
-        for p in this.L.keys():
-            this.C[np.argmin(this.L[p])].append(p)
