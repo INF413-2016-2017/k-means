@@ -93,7 +93,7 @@ class Base(Algorithm):
     Regular k-means algorithm.
     """
     def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
-        super(Base2, this).__init__(data, nClusters, distance, iter_max, dataType)
+        super(Base, this).__init__(data, nClusters, distance)
         this.iter = 0
         this.iter_max = iter_max
         this.dataType = dataType
@@ -134,12 +134,12 @@ class Base(Algorithm):
             this.C[np.argmin(this.L[p])].append(p)
 
 
-class Base(Base):
+class Base2(Base):
     """
     Regular k-means algorithm, but use a point belong to the cluster as a center.
     """
     def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
-        super(Base, this).__init__(data, nClusters, distance)
+        super(Base2, this).__init__(data, nClusters, distance)
 
     def updateCenters(this):
         """
