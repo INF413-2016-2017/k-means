@@ -21,7 +21,7 @@ p = filesManagment.read_data("in.csv", ignore_first_column=True)
 A = Base(p, nClusters, D.euclidean, iter_max=10)
 A.run()
 
-displayPoints(A.C, A.c)
+display_points(A.C, A.c)
 
 filesManagment.write_solution('out.csv', A.C)
 filesManagment.write_centers('centers.csv', A.c)

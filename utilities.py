@@ -6,12 +6,11 @@ from math import sqrt
 import distance
 
 
-
-def displayPoints(C, c):
+def display_points(C, c):
     """
     Display the cluster using a different color for each cluster.
-    :param C:
-    :param c:
+    :param C: List of clusters.
+    :param c: List of centers.
     :return: None
     """
     if len(C[0][0]) == 2:
@@ -35,14 +34,15 @@ def displayPoints(C, c):
     else:
         raise Exception("Wrong dimension")
 
-def displayWords(C):
+
+def display_words(C):
     """
     Display the cluster of words.
-    :param C:
+    :param C: List of clusters.
     :return: None
     """
-    for wList in C:
-        print(wList)
+    for cluster in C:
+        print(cluster)
 
 
 class Distance:
@@ -59,10 +59,10 @@ class Distance:
                 raise Exception("Arguments do not have the same dimension")
             else:
                 d = len(X)
-                distance = 0
+                s = 0
                 for i in range(d):
-                    distance += (X[i] - Y[i]) ** 2
-                return sqrt(distance)
+                    s += (X[i] - Y[i]) ** 2
+                return sqrt(s)
 
         def levenshtein(X, Y):
             """

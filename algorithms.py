@@ -8,11 +8,12 @@ import numpy as np
 class Algorithm(object):
     def __init__(this, data, nClusters, distance):
         """
-        :param data: list
-        :param nClusters: int
+        :type data: object
+        :type nClusters: int
+        :param data: Input data
         :param distance: function that takes two arguments.
         """
-        #FIXME: Add comments.
+        # FIXME: Add comments.
         this.p = set(data)
         this.n = len(data)
         this.k = nClusters
@@ -21,16 +22,22 @@ class Algorithm(object):
         this.C = []
         this.distance = distance
 
-    def average(this, L, dataType):
+    def _average(this, data, dataType):
+        """
+        Return the coordinates of the barycenter if data are points, the average word if data are words.
+        :type dataType: str
+        :param dataType: Indicates if the data are points or words.
+        :return: Average data
+        """
         if dataType == 'points':
             """
                 Return the coordinates of the barycenter of the tuples in the list L
             """
-            n = len(L)
-            d = len(L[0])  # Number of coordinates
+            n = len(data)
+            d = len(data[0])  # Number of coordinates
             B = [0 for k in range(d)]
 
-            for point in L:
+            for point in data:
                 for i in range(d):
                     B[i] += point[i]
 
@@ -42,27 +49,28 @@ class Algorithm(object):
             """
                 Return the average word from the list of words.
             """
-            maxLength = max(map(len, L))
-            averageWord = ['' for k in range(maxLength)]
+            # FIXME: sometimes, data is empty.
+            max_length = max(map(len, data))
+            average_word = ['' for k in range(max_length)]
 
             # Make all the words the same length
-            #FIXME: add comments
-            for i in range(len(L)):
-                n = len(L[i])
-                L[i] = L[i] + (maxLength - n) * ' '
+            # FIXME: add comments
+            for i in range(len(data)):
+                n = len(data[i])
+                data[i] = data[i] + (max_length - n) * ' '
 
-            for k in range(maxLength):
-                listChar = [w[k] for w in L]  # List of k-th characters in each word.
-                averageWord[k] = Counter(listChar).most_common(1)[0][0]
+            for k in range(max_length):
+                listchar = [w[k] for w in data]  # List of k-th characters in each word.
+                average_word[k] = Counter(listchar).most_common(1)[0][0]
 
-            return ''.join(w)  # Convert to string
+            return ''.join(average_word)  # Convert to string
 
         else:
             raise Exception("Data type not implemented")
 
-    def updateDistances(this):
+    def update_distances(this):
         """
-        Updates the dictionnary of distances.
+        Updates the dictionary of distances.
         :return: None
         """
         pLeft = this.p - set(this.c)
@@ -78,14 +86,14 @@ class Algorithm(object):
         Main loop of the algorithm
         :return: None
         """
-        this.chooseInitCenters()
-        this.updateDistances()
-        this.pointsToClusters()
+        this.choose_init_centers()
+        this.update_distances()
+        this.points_to_clusters()
 
-        while this.stopCondition():
-            this.updateCenters()
-            this.updateDistances()
-            this.pointsToClusters()
+        while this.stop_condition():
+            this.update_centers()
+            this.update_distances()
+            this.points_to_clusters()
 
 
 class Base(Algorithm):
@@ -98,7 +106,7 @@ class Base(Algorithm):
         this.iter_max = iter_max
         this.dataType = dataType
 
-    def chooseInitCenters(this):
+    def choose_init_centers(this):
         """
         Choose k centers among p randomly.
         """
@@ -107,7 +115,7 @@ class Base(Algorithm):
         for i in range(this.k):
             this.c.append(pTmp.pop(randint(0, len(pTmp) - 1)))
 
-    def stopCondition(this):
+    def stop_condition(this):
         """
         Stop the algorithm when more than max_iter have been made.
         :return: boolean
@@ -115,15 +123,15 @@ class Base(Algorithm):
         this.iter += 1
         return this.iter < this.iter_max
 
-    def updateCenters(this):
+    def update_centers(this):
         """
         Choose a new center for each cluster.
         :return: None.
         """
         for i in range(this.k):
-            this.c[i] = this.average(this.C[i], this.dataType) # Barycenter of average word
+            this.c[i] = this._average(this.C[i], this.dataType)  # Barycenter of average word
 
-    def pointsToClusters(this):
+    def points_to_clusters(this):
         """
         Assign points to the cluster of the closest center.
         :return: None
@@ -139,20 +147,20 @@ class Base2(Base):
     Regular k-means algorithm, but use a point belong to the cluster as a center.
     """
     def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
-        super(Base2, this).__init__(data, nClusters, distance)
+        super(Base2, this).__init__(data, nClusters, distance, iter_max, dataType)
 
-    def updateCenters(this):
+    def update_centers(this):
         """
         Choose new center for each cluster. Compute the average, then chose the closest to the average.
         :return: None
         """
         for i in range(this.k):
             # Return the closest point to the average in this.C[i].
-            B = this.average(this.C[i], this.dataType)  # Barycenter for points, else average word
+            B = this._average(this.C[i], this.dataType)  # Barycenter for points, else average word
             distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
             this.c[i] = this.C[i][np.argmin(distances)]
 
-    def pointsToClusters(this):
+    def points_to_clusters(this):
         """
         Assign points to the cluster of the closest center.
         :return: None
@@ -168,10 +176,10 @@ class BaseStopUnchanged(Base):
     Base algorithm, but stops when no points changed of cluster.
     """
     def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
-        super(BaseStopUnchanged, this).__init__(data, nClusters, distance)
+        super(BaseStopUnchanged, this).__init__(data, nClusters, distance, iter_max, dataType)
         this.c_former = []
 
-    def stopCondition(this):
+    def stop_condition(this):
         """
         Stop the algorithm when no points changed of cluster.
         Compare the list of center instead of the clusters: faster.

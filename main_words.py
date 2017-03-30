@@ -19,4 +19,4 @@ data.read(filename)
 A = Base(data.data, k, D.levenshtein,  dataType='words')
 A.run()
 
-displayWords(A.C)
+display_words(A.C)
