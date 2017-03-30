@@ -17,7 +17,7 @@ class Algorithm(object):
         this.n = len(data)
         this.k = nClusters
         this.c = []
-        this.L = []
+        this.L = {}
         this.C = []
         this.distance = distance
 
@@ -62,7 +62,7 @@ class Algorithm(object):
 
     def updateDistances(this):
         """
-        Updates the list of distances.
+        Updates the dictionnary of distances.
         :return: None
         """
         pLeft = this.p - set(this.c)
@@ -157,7 +157,7 @@ class Base2(Base):
         Assign points to the cluster of the closest center.
         :return: None
         """
-        this.C = [[this.c[i]] for i in range(this.k)]  # C[i] is the list of points in cluster i. Add the center in the list.
+        this.C = [[this.c[i]] for i in range(this.k)]  # C[i]: list of points in cluster i. Add the center in the list.
 
         for p in this.L.keys():
             this.C[np.argmin(this.L[p])].append(p)
@@ -165,32 +165,20 @@ class Base2(Base):
 
 class BaseStopUnchanged(Base):
     """
-    Base algorithm, but stops when no points moved from a cluster for more than max_iter.
+    Base algorithm, but stops when no points changed of cluster.
     """
-    def __init__(this, data, nClusters, iter_max=10):
-        super(BaseStopUnchanged, this).__init__(data, nClusters, iter_max)
-        this.iter_stop = 0
-        this.C_former = []
+    def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
+        super(BaseStopUnchanged, this).__init__(data, nClusters, distance)
+        this.c_former = []
 
     def stopCondition(this):
         """
-        Stop the algorithm when no points moved from a cluster for more than max_iter.
+        Stop the algorithm when no points changed of cluster.
+        Compare the list of center instead of the clusters: faster.
         :return: boolean
         """
-        # FIXME: check if useful
-        this.iter += 1
-        if this.hasChanged():
-            this.iter_stop = 0
-            this.C_former = this.C
+        if this.c_former != this.c:
+            this.c_former = this.c
             return True
         else:
-            this.iter_stop += 1
-            return this.iter_stop < this.iter_max
-
-    def hasChanged(this):
-        """
-        Indicated if a point changed of cluster.
-        :return: boolean
-        """
-        # FIXME: use c instead of C ?
-        return this.C_former != this.C
+            return False
