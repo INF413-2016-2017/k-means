@@ -6,31 +6,31 @@ import numpy as np
 
 
 class Algorithm(object):
-    def __init__(this, data, nClusters, distance):
+    def __init__(this, data, n_clusters, distance):
         """
         :type data: object
-        :type nClusters: int
+        :type n_clusters: int
         :param data: Input data
-        :param nClusters: Number of clusters
+        :param n_clusters: Number of clusters
         :param distance: function that takes two arguments.
         """
         # FIXME: Add comments.
         this.p = set(data)
         this.n = len(data)  # Number of data
-        this.k = nClusters  # Number of clusters
+        this.k = n_clusters  # Number of clusters
         this.c = []
         this.L = {}
         this.C = []
         this.distance = distance
 
-    def _average(this, data, dataType):
+    def _average(this, data, data_type):
         """
         Return the coordinates of the barycenter if data are points, the average word if data are words.
-        :type dataType: str
-        :param dataType: Indicates if the data are points or words.
+        :type data_type: str
+        :param data_type: Indicates if the data are points or words.
         :return: Average data
         """
-        if dataType == 'points':
+        if data_type == 'points':
             """
                 Return the coordinates of the barycenter of the tuples in the list L
             """
@@ -46,7 +46,7 @@ class Algorithm(object):
             B = map(lambda x: x / n, B)
             return tuple(B)
 
-        elif dataType == 'words':
+        elif data_type == 'words':
             """
                 Return the average word from the list of words.
             """
@@ -101,11 +101,11 @@ class Base(Algorithm):
     """
     Generalize Lloyd's algorithm.
     """
-    def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
-        super(Base, this).__init__(data, nClusters, distance)
+    def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
+        super(Base, this).__init__(data, n_clusters, distance)
         this.iter = 0
         this.iter_max = iter_max
-        this.dataType = dataType
+        this.data_type = data_type
 
     def choose_init_centers(this):
         """
@@ -130,7 +130,7 @@ class Base(Algorithm):
         :return: None.
         """
         for i in range(this.k):
-            this.c[i] = this._average(this.C[i], this.dataType)  # Barycenter of average word
+            this.c[i] = this._average(this.C[i], this.data_type)  # Barycenter of average word
 
     def points_to_clusters(this):
         """
@@ -147,8 +147,8 @@ class Base2(Base):
     """
     Regular k-means algorithm, but use a point belong to the cluster as a center.
     """
-    def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
-        super(Base2, this).__init__(data, nClusters, distance, iter_max, dataType)
+    def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
+        super(Base2, this).__init__(data, n_clusters, distance, iter_max, data_type)
 
     def update_centers(this):
         """
@@ -157,7 +157,7 @@ class Base2(Base):
         """
         for i in range(this.k):
             # Return the closest point to the average in this.C[i].
-            B = this._average(this.C[i], this.dataType)  # Barycenter for points, else average word
+            B = this._average(this.C[i], this.data_type)  # Barycenter for points, else average word
             distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
             this.c[i] = this.C[i][np.argmin(distances)]
 
@@ -176,8 +176,8 @@ class BaseStopUnchanged(Base):
     """
     Base algorithm, but stops when no points changed of cluster.
     """
-    def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
-        super(BaseStopUnchanged, this).__init__(data, nClusters, distance, iter_max, dataType)
+    def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
+        super(BaseStopUnchanged, this).__init__(data, n_clusters, distance, iter_max, data_type)
         this.c_former = []
 
     def stop_condition(this):

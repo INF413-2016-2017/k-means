@@ -21,7 +21,7 @@ TP1_Gardin_Garet_INF413_2016_2017_A
 Questions
 ---------
 -Bibliographie  
--Faire des recherches
+-Faire des recherches.
 -Choix de la distance.
 -Choix des centres initiaux (voir les pdf)  
 -Choix du critère d'arrêt  

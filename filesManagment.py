@@ -1,34 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import random
-import sys
-
-
-class FileManager:
-    def __init__(this, dataType="points", skip_first_line=False, ignore_first_column=False):
-        this.dataType = dataType
-        this.skip_first_line = skip_first_line
-        this.ignore_first_column = ignore_first_column
-
-    def read(this, filename):
-        f = open(filename, 'r')
-        if this.skip_first_line:
-            f.readline()
-
-        this.data = set([])
-
-        if this.dataType == 'words':
-            for line in f:
-                this.data.add(line.strip())
-            f.close()
-        else:
-            for line in f:
-                line = line.split(",")
-                line[1:] = [float(x) for x in line[1:]]
-                if this.ignore_first_column:
-                    line = line[1:]
-                this.data.add(tuple(line))
-            f.close()
 
 
 def read_data(filename, skip_first_line=False, ignore_first_column=False):
@@ -101,12 +73,11 @@ def generate_random_data(nb_objs, nb_attrs, frand=random.random):
     for i in range(nb_objs):
         line = [i + 1] + map(lambda x: frand(), range(nb_attrs))
         data.append(tuple(line))
-    return (data)
+    return data
 
 
 def write_solution(filename, solution):
     f = open(filename, 'w')
-
     k = 1  # Cluster index
     i = 1  # Points index
 
@@ -122,7 +93,6 @@ def write_solution(filename, solution):
 
 def write_centers(filename, centers):
     f = open(filename, 'w')
-
     k = 1  # Center index
 
     for center in centers:
@@ -131,6 +101,3 @@ def write_centers(filename, centers):
         f.write(s + '\n')
         k += 1
     # f.close()
-
-# write_data(data, "out.csv")
-# data_read = read_data("out.csv")

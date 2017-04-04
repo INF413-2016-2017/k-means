@@ -16,7 +16,7 @@ D = Distance()
 data = filesManagment.FileManager(dataType='words')
 data.read(filename)
 
-A = Base(data.data, k, D.levenshtein,  dataType='words')
+A = Base(data.data, k, D.levenshtein, data_type='words')
 A.run()
 
 display_words(A.C)

@@ -73,3 +73,11 @@ class Distance:
 
         this.euclidean = euclidean
         this.levenshtein = levenshtein
+
+
+class Data:
+    """
+    Implements the different data available.
+    """
+    def __init__(this, data_type='points'):
+        this.data_type = data_type
