@@ -11,12 +11,13 @@ class Algorithm(object):
         :type data: object
         :type nClusters: int
         :param data: Input data
+        :param nClusters: Number of clusters
         :param distance: function that takes two arguments.
         """
         # FIXME: Add comments.
         this.p = set(data)
-        this.n = len(data)
-        this.k = nClusters
+        this.n = len(data)  # Number of data
+        this.k = nClusters  # Number of clusters
         this.c = []
         this.L = {}
         this.C = []
@@ -98,7 +99,7 @@ class Algorithm(object):
 
 class Base(Algorithm):
     """
-    Regular k-means algorithm.
+    Generalize Lloyd's algorithm.
     """
     def __init__(this, data, nClusters, distance, iter_max=10, dataType='points'):
         super(Base, this).__init__(data, nClusters, distance)

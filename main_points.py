@@ -7,9 +7,9 @@ from utilities import *
 
 
 """ Parameters """
-nPoints = 5000
+nPoints = 1000
 dimension = 2
-nClusters = 6
+nClusters = 7
 D = Distance()
 
 

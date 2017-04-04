@@ -27,7 +27,7 @@ class FileManager:
                 line[1:] = [float(x) for x in line[1:]]
                 if this.ignore_first_column:
                     line = line[1:]
-                data.append(tuple(line))
+                this.data.add(tuple(line))
             f.close()
 
 
