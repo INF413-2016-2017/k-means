@@ -9,13 +9,14 @@ import random
 
 """ Parameters """
 nPoints = 5000
+
 dimension = 2
-nClusters = 7
+nClusters = 3
 D = Distance()
 
 
 """ Points test """
-data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 4)
+data = filesManagment.generate_random_gaussian_data2(nPoints, dimension, 4)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
 

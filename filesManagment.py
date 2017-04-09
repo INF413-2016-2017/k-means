@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import random
+import numpy as np
 
 def read_data(filename, skip_first_line=False, ignore_first_column=False):
     """
@@ -58,7 +59,7 @@ def generate_random_data(nb_objs, nb_attrs):
     """
     data = []
     for i in range(nb_objs):
-        line = [i + 1] + map(random.random(), range(nb_attrs))
+        line = [i + 1] + map(lambda x: random.random(), range(nb_attrs))
         data.append(tuple(line))
     return data
 
@@ -74,6 +75,29 @@ def generate_random_gaussian_data(nb_objs, nb_attrs, k):
     for i in range(nb_objs):
         line = [i + 1] + map(lambda x: random.gauss(0, 1), range(nb_attrs))
         data.append(tuple(line))
+    return data
+
+def generate_random_gaussian_data2(nb_objs, nb_attrs, k):
+    """
+    
+    :param nb_objs: 
+    :param nb_attrs: 
+    :param k: The number of groups to create.
+    :return: 
+    """
+    data = []
+
+    centers = generate_random_data(k, nb_attrs)
+
+    centers = np.array(centers)
+    centers = centers[:,1:]
+
+    
+    for i in range(nb_objs):
+        center = centers[random.randint(0,len(centers)-1)]
+        line = [i + 1] + map(lambda x: random.gauss(x, 0.05), center)
+        #line = [i+1, random.gauss(center[j],1) for j in range(len(center))]
+        data.append(line)
     return data
 
 
