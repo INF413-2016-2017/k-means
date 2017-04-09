@@ -11,7 +11,7 @@ import random
 nPoints = 5000
 
 dimension = 2
-nClusters = 3
+nClusters = 4
 D = Distance()
 
 
