@@ -4,21 +4,22 @@
 import filesManagment
 from algorithms import *
 from utilities import *
+import random
 
 
 """ Parameters """
-nPoints = 1000
+nPoints = 5000
 dimension = 2
 nClusters = 7
 D = Distance()
 
 
 """ Points test """
-data = filesManagment.generate_random_data(nPoints, dimension)
+data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 4)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
 
-A = Base(p, nClusters, D.euclidean, iter_max=10)
+A = GeneralizedLlyod(p, nClusters, D.euclidean, iter_max=10)
 A.run()
 
 display_points(A.C, A.c)

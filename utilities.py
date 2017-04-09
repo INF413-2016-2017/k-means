@@ -79,5 +79,6 @@ class Data:
     """
     Implements the different data available.
     """
-    def __init__(this, data_type='points'):
+    def __init__(this, data, data_type='points'):
+        this.data = data
         this.data_type = data_type

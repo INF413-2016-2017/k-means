@@ -40,5 +40,6 @@ Todo
 -Add more data input.  
 -Add ponderation for euclidean distance.  
 -Follow pep conventions.  
--Improve file managment.  
--Comment.  
+-Improve file management.
+-Comment.
+-Add random data generation function: generate k clusters following a gaussian distribution.

@@ -15,12 +15,12 @@ class Algorithm(object):
         :param distance: function that takes two arguments.
         """
         # FIXME: Add comments.
-        this.p = set(data)
-        this.n = len(data)  # Number of data
-        this.k = n_clusters  # Number of clusters
-        this.c = []
-        this.L = {}
-        this.C = []
+        this.p = set(data)  # Set of data.
+        this.n = len(data)  # Number of data.
+        this.k = n_clusters  # Number of clusters.
+        this.c = []  # List of centers.
+        this.L = {}  # Dictionnary of list representing the distances of each element to the centers.
+        this.C = []  # List of list in which C[k] is the list of data in cluster k.
         this.distance = distance
 
     def _average(this, data, data_type):
@@ -97,12 +97,12 @@ class Algorithm(object):
             this.points_to_clusters()
 
 
-class Base(Algorithm):
+class GeneralizedLlyod(Algorithm):
     """
     Generalize Lloyd's algorithm.
     """
     def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
-        super(Base, this).__init__(data, n_clusters, distance)
+        super(GeneralizedLlyod, this).__init__(data, n_clusters, distance)
         this.iter = 0
         this.iter_max = iter_max
         this.data_type = data_type
@@ -143,7 +143,7 @@ class Base(Algorithm):
             this.C[np.argmin(this.L[p])].append(p)
 
 
-class Base2(Base):
+class Base2(GeneralizedLlyod):
     """
     Regular k-means algorithm, but use a point belong to the cluster as a center.
     """
@@ -172,7 +172,7 @@ class Base2(Base):
             this.C[np.argmin(this.L[p])].append(p)
 
 
-class BaseStopUnchanged(Base):
+class BaseStopUnchanged(GeneralizedLlyod):
     """
     Base algorithm, but stops when no points changed of cluster.
     """

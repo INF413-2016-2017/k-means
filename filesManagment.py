@@ -2,24 +2,20 @@
 
 import random
 
-
 def read_data(filename, skip_first_line=False, ignore_first_column=False):
     """
     Loads data from a csv file and returns the corresponding list.
     All data are expected to be floats, except in the first column.
 
-    @param filename: csv file name.
+    :param filename: csv file name.
 
-    @param skip_first_line: if True, the first line is not read.
-        Default value: False.
+    :param skip_first_line: if True, the first line is not read. Default value: False.
 
-    @param ignore_first_column: if True, the first column is ignored.
-        Default value: False.
+    :param ignore_first_column: if True, the first column is ignored. Default value: False.
 
-    @return: a list of lists, each list being a row in the data file.
-        Rows are returned in the same order as in the file.
-        They contains floats, except for the 1st element which is a string
-        when the first column is not ignored.
+    :return: a list of lists, each list being a row in the data file.
+    Rows are returned in the same order as in the file.
+    They contains floats, except for the 1st element which is a string when the first column is not ignored.
     """
 
     f = open(filename, 'r')
@@ -41,10 +37,9 @@ def write_data(data, filename):
     """
     Writes data in a csv file.
 
-    @param data: a list of lists
-
-    @param filename: the path of the file in which data is written.
-        The file is created if necessary; if it exists, it is overwritten.
+    :param data: a list of lists
+    :param filename: the path of the file in which data is written.
+    The file is created if necessary; if it exists, it is overwritten.
     """
     # If you're curious, look at python's module csv instead, which offers
     # more powerful means to write (and read!) csv files.
@@ -55,23 +50,29 @@ def write_data(data, filename):
     f.close()
 
 
-def generate_random_data(nb_objs, nb_attrs, frand=random.random):
+def generate_random_data(nb_objs, nb_attrs):
     """
     Generates a matrix of random data.
-
-    @param frand: the fonction used to generate random values.
-        It defaults to random.random.
-        Example::
-
-            import random
-            generate_random_data(5, 6, lambda: random.gauss(0, 1))
-
-    @return: a matrix with nb_objs rows and nb_attrs+1 columns. The 1st
-        column is filled with line numbers (integers, from 1 to nb_objs).
+    :return: a matrix with nb_objs rows and nb_attrs+1 columns. 
+    The 1st column is filled with line numbers (integers, from 1 to nb_objs).
     """
     data = []
     for i in range(nb_objs):
-        line = [i + 1] + map(lambda x: frand(), range(nb_attrs))
+        line = [i + 1] + map(random.random(), range(nb_attrs))
+        data.append(tuple(line))
+    return data
+
+def generate_random_gaussian_data(nb_objs, nb_attrs, k):
+    """
+    
+    :param nb_objs: 
+    :param nb_attrs: 
+    :param k: The number of groups to create.
+    :return: 
+    """
+    data = []
+    for i in range(nb_objs):
+        line = [i + 1] + map(lambda x: random.gauss(0, 1), range(nb_attrs))
         data.append(tuple(line))
     return data
 
