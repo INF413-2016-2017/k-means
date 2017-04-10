@@ -4,9 +4,11 @@ from random import randint
 from collections import Counter
 import numpy as np
 
+import itertools
+
 
 class Algorithm(object):
-    def __init__(this, data, n_clusters, distance):
+    def __init__(this, data, n_clusters, distance, iterations=50):
         """
         :type data: object
         :type n_clusters: int
@@ -22,6 +24,32 @@ class Algorithm(object):
         this.L = {}  # Dictionary of list representing the distances of each element to the centers.
         this.C = []  # List of list in which C[k] is the list of data in cluster k.
         this.distance = distance
+
+        this.iterations = iterations
+
+        this.distMin = 0
+        this.cBest = []
+        this.CBest = []
+
+    def remember_best_result(this):
+        """
+        Stores the best result so far
+        """
+
+        totalDistance = 0
+
+        for i in range(len(this.C)):
+        #for each center
+            for point in this.C[i]:
+            #for each point related to this center
+                totalDistance+=this.L[point][i]
+                #add the distance between the point and the center
+
+        #if this is the best result so far (or the 1st) we remember it
+        if totalDistance < this.distMin or this.distMin == 0:
+            this.cBest = this.c
+            this.CBest = this.C
+            this.distMin = totalDistance
 
     @staticmethod
     def _average(data, data_type):
@@ -88,14 +116,24 @@ class Algorithm(object):
         Main loop of the algorithm
         :return: None
         """
-        this.choose_init_centers()
-        this.update_distances()
-        this.points_to_clusters()
+        for i in range(this.iterations):
 
-        while this.stop_condition():
-            this.update_centers()
+            this.choose_init_centers()
             this.update_distances()
             this.points_to_clusters()
+
+            while this.stop_condition():
+                this.update_centers()
+                this.update_distances()
+                this.points_to_clusters()
+
+            this.remember_best_result()
+
+            print("iteration: "+str(i+1))
+            print("distance totale: "+str(this.distMin))
+
+        this.c = this.cBest
+        this.C=this.CBest
 
 
 class GeneralizedLlyod(Algorithm):

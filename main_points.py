@@ -7,7 +7,7 @@ from utilities import *
 
 
 """ Parameters """
-nPoints = 1000
+nPoints = 5000
 
 dimension = 2
 nClusters = 4
