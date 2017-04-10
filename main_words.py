@@ -13,10 +13,9 @@ D = Distance()
 
 
 """ Words test """
-data = filesManagment.FileManager(dataType='words')
-data.read(filename)
+data = filesManagment.read_data("words.txt", data_type='words')
 
-A = Base(data.data, k, D.levenshtein, data_type='words')
+A = GeneralizedLlyod(data, k, D.levenshtein, data_type='words', iter_max=5)
 A.run()
 
 display_words(A.C)

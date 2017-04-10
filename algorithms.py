@@ -19,11 +19,12 @@ class Algorithm(object):
         this.n = len(data)  # Number of data.
         this.k = n_clusters  # Number of clusters.
         this.c = []  # List of centers.
-        this.L = {}  # Dictionnary of list representing the distances of each element to the centers.
+        this.L = {}  # Dictionary of list representing the distances of each element to the centers.
         this.C = []  # List of list in which C[k] is the list of data in cluster k.
         this.distance = distance
 
-    def _average(this, data, data_type):
+    @staticmethod
+    def _average(data, data_type):
         """
         Return the coordinates of the barycenter if data are points, the average word if data are words.
         :type data_type: str
@@ -143,12 +144,12 @@ class GeneralizedLlyod(Algorithm):
             this.C[np.argmin(this.L[p])].append(p)
 
 
-class Base2(GeneralizedLlyod):
+class GeneralizedLlyod_clusterAsCenter(GeneralizedLlyod):
     """
     Regular k-means algorithm, but use a point belong to the cluster as a center.
     """
     def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
-        super(Base2, this).__init__(data, n_clusters, distance, iter_max, data_type)
+        super(GeneralizedLlyod_clusterAsCenter, this).__init__(data, n_clusters, distance, iter_max, data_type)
 
     def update_centers(this):
         """
@@ -172,12 +173,12 @@ class Base2(GeneralizedLlyod):
             this.C[np.argmin(this.L[p])].append(p)
 
 
-class BaseStopUnchanged(GeneralizedLlyod):
+class GeneralizedLlyod_stopUnchanged(GeneralizedLlyod):
     """
     Base algorithm, but stops when no points changed of cluster.
     """
     def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
-        super(BaseStopUnchanged, this).__init__(data, n_clusters, distance, iter_max, data_type)
+        super(GeneralizedLlyod_stopUnchanged, this).__init__(data, n_clusters, distance, iter_max, data_type)
         this.c_former = []
 
     def stop_condition(this):

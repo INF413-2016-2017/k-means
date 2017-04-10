@@ -3,10 +3,10 @@
 import random
 import numpy as np
 
-def read_data(filename, skip_first_line=False, ignore_first_column=False):
+
+def read_data(filename, skip_first_line=False, ignore_first_column=False, data_type='points'):
     """
-    Loads data from a csv file and returns the corresponding list.
-    All data are expected to be floats, except in the first column.
+    Loads data from a csv file and returns the corresponding list. See provided input files for format convention.
 
     :param filename: csv file name.
 
@@ -14,9 +14,9 @@ def read_data(filename, skip_first_line=False, ignore_first_column=False):
 
     :param ignore_first_column: if True, the first column is ignored. Default value: False.
 
-    :return: a list of lists, each list being a row in the data file.
-    Rows are returned in the same order as in the file.
-    They contains floats, except for the 1st element which is a string when the first column is not ignored.
+    :param data_type: either 'points' or 'words'.
+
+    :return: a list of data.
     """
 
     f = open(filename, 'r')
@@ -24,12 +24,18 @@ def read_data(filename, skip_first_line=False, ignore_first_column=False):
         f.readline()
 
     data = []
-    for line in f:
-        line = line.split(",")
-        line[1:] = [float(x) for x in line[1:]]
-        if ignore_first_column:
-            line = line[1:]
-        data.append(tuple(line))
+
+    if data_type == 'points':
+        for line in f:
+            line = line.split(",")
+            line[1:] = [float(x) for x in line[1:]]
+            if ignore_first_column:
+                line = line[1:]
+            data.append(tuple(line))
+    else:
+        for line in f:
+            line = line.split(' ')
+            data.append(line[0].strip())
     f.close()
     return data
 
@@ -63,23 +69,10 @@ def generate_random_data(nb_objs, nb_attrs):
         data.append(tuple(line))
     return data
 
+
 def generate_random_gaussian_data(nb_objs, nb_attrs, k):
     """
-    
-    :param nb_objs: 
-    :param nb_attrs: 
-    :param k: The number of groups to create.
-    :return: 
-    """
-    data = []
-    for i in range(nb_objs):
-        line = [i + 1] + map(lambda x: random.gauss(0, 1), range(nb_attrs))
-        data.append(tuple(line))
-    return data
-
-def generate_random_gaussian_data2(nb_objs, nb_attrs, k):
-    """
-    
+    Generate k cluster of points following a gaussian repartition.
     :param nb_objs: 
     :param nb_attrs: 
     :param k: The number of groups to create.
@@ -90,13 +83,12 @@ def generate_random_gaussian_data2(nb_objs, nb_attrs, k):
     centers = generate_random_data(k, nb_attrs)
 
     centers = np.array(centers)
-    centers = centers[:,1:]
-
+    centers = centers[:, 1:]
     
     for i in range(nb_objs):
-        center = centers[random.randint(0,len(centers)-1)]
+        center = centers[random.randint(0, len(centers)-1)]
         line = [i + 1] + map(lambda x: random.gauss(x, 0.05), center)
-        #line = [i+1, random.gauss(center[j],1) for j in range(len(center))]
+        # line = [i+1, random.gauss(center[j],1) for j in range(len(center))]
         data.append(line)
     return data
 
