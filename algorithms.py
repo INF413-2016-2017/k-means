@@ -9,7 +9,7 @@ import itertools
 
 
 class Algorithm(object):
-    def __init__(this, data, n_clusters, distance, iterations=50):
+    def __init__(this, data, n_clusters, distance, iterations=20):
         """
         :type data: object
         :type n_clusters: int
@@ -27,10 +27,11 @@ class Algorithm(object):
         this.distance = distance
 
         this.iterations = iterations
+        #the algorithm is launched iterations times and keeps the best result
 
-        this.distMin = 0
-        this.cBest = []
-        this.CBest = []
+        this.distMin = 0 #best sum of distances between points and their center
+        this.cBest = [] #best c
+        this.CBest = [] #best C
 
     def remember_best_result(this):
         """
