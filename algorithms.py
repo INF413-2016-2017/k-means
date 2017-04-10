@@ -3,6 +3,7 @@
 from random import randint
 from collections import Counter
 import numpy as np
+import scipy.stats as stats
 
 import itertools
 
@@ -230,3 +231,29 @@ class GeneralizedLlyod_stopUnchanged(GeneralizedLlyod):
             return True
         else:
             return False
+
+class G_means:
+    def __init__(this, data, alpha, distance):
+        this.data = data
+        this.alpha = alpha
+        this.distance = distance
+        this.c = []
+
+    @staticmethod
+    def gaussian_test(data):
+        return stats.normaltest(data)
+
+    def run(this):
+        k = 1
+        k_former = -1
+        centers = [point]
+
+        if k_former != k:
+            k_former = k
+            k_means = GeneralizedLlyod(this.data, k, this.distance, centers)
+
+            for cluster in k_means.C:
+                p = this.gaussian_test(cluster)
+                if p < 0.5:
+                    centers.append(new_center)
+                    k+=1
