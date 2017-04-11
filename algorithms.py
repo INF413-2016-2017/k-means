@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from random import randint
+from random import randint, random
 from collections import Counter
 import numpy as np
 import scipy.stats as stats
+import matplotlib.pyplot as plt
 
 
 class Algorithm(object):
@@ -16,7 +17,7 @@ class Algorithm(object):
         :param distance: function that takes two arguments.
         """
         # FIXME: Add comments.
-        this.p = set(data)  # Set of data.
+        this.data = set(data)  # Set of data.
         this.n = len(data)  # Number of data.
         this.k = n_clusters  # Number of clusters.
         this.centers = []  # List of centers.
@@ -77,10 +78,8 @@ class Algorithm(object):
         Updates the dictionary of distances.
         :return: None
         """
-        pLeft = this.p - set(this.centers)
-        this.distances = {}
 
-        for p in pLeft:
+        for p in this.data:
             this.distances[p] = [0 for i in range(this.k)]
             for i in range(this.k):
                 this.distances[p][i] = this.distance(this.centers[i], p)
@@ -173,9 +172,16 @@ class GeneralizedLlyod(Algorithm):
         this.data_type = data_type
         this.centers = centers
 
+    @staticmethod
+    def random_point(dimension):
+        point = []
+        for j in range(dimension):
+            point.append(random())
+        return tuple(point)
+
     def choose_init_centers(this):
         """
-        Choose k centers among p randomly.
+        Choose k centers randomly.
         """
 
         if this.centers is not None:
@@ -183,9 +189,18 @@ class GeneralizedLlyod(Algorithm):
                 raise Exception("Number of centers provided incorrect.")
         else:
             this.centers = []
-            pTmp = list(this.p)
-            for i in range(this.k):
-                this.centers.append(pTmp.pop(randint(0, len(pTmp) - 1)))
+            if this.data_type == "points":
+
+                # Get the dimension
+                for e in this.data:
+                    break
+                d = len(e)
+
+                for i in range(this.k):
+                    this.centers.append(this.random_point(d))
+            else:
+                # TODO: add words data type
+                raise Exception("Data type not implemented.")
 
     def stop_condition(this):
         """
@@ -202,7 +217,12 @@ class GeneralizedLlyod(Algorithm):
         """
         # FIXME: sometimes, a cluster does not contain any point. Hence, the call to _average will result in an error.
         for i in range(this.k):
-            this.centers[i] = this._average(this.clusters[i], this.data_type)  # Barycenter or average word
+            if this.clusters[i] == []:
+                for e in this.data:
+                    break
+                this.centers[i] = this.random_point(len(e))
+            else:
+                this.centers[i] = this._average(this.clusters[i], this.data_type)  # Barycenter or average word
 
     def points_to_clusters(this):
         """
@@ -221,6 +241,20 @@ class GeneralizedLlyod_clusterAsCenter(GeneralizedLlyod):
     """
     def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
         super(GeneralizedLlyod_clusterAsCenter, this).__init__(data, n_clusters, distance, iter_max, data_type)
+
+    def choose_init_centers(this):
+        """
+        Choose k centers among data randomly.
+        """
+
+        if this.centers is not None:
+            if len(this.centers) != this.k:
+                raise Exception("Number of centers provided incorrect.")
+        else:
+            this.centers = []
+            pTmp = list(this.data)
+            for i in range(this.k):
+                this.centers.append(pTmp.pop(randint(0, len(pTmp) - 1)))
 
     def update_centers(this):
         """
@@ -247,6 +281,7 @@ class GeneralizedLlyod_clusterAsCenter(GeneralizedLlyod):
 class GeneralizedLlyod_stopUnchanged(GeneralizedLlyod):
     """
     Base algorithm, but stops when no points changed of cluster.
+    FIXME: doesn't work. Strange
     """
     def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
         super(GeneralizedLlyod_stopUnchanged, this).__init__(data, n_clusters, distance, iter_max, data_type)
@@ -279,6 +314,10 @@ class G_means:
 
     def is_gaussian(this, data):
         s, p = stats.normaltest(data, axis=None)
+        if this.alpha < p:
+            points = zip(*data)
+            plt.scatter(points[0], points[1], s=10)
+            plt.show()
         return this.alpha < p
 
     def run(this):
@@ -286,7 +325,7 @@ class G_means:
 
         while k_former != this.k:
             k_former = this.k
-            k_means = GeneralizedLlyod_stopUnchanged(this.data, this.k, this.distance)
+            k_means = GeneralizedLlyod(this.data, this.k, this.distance)
             k_means.run()
 
             this.centers = k_means.centers
@@ -295,4 +334,4 @@ class G_means:
             for cluster in k_means.clusters:
                 if len(cluster) >= 20 and not this.is_gaussian(cluster):
                     this.k += 1
-
+            print("Current cluster size: "+str(this.k))
