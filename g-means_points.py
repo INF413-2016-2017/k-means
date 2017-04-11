@@ -7,38 +7,25 @@ from utilities import *
 import matplotlib.pyplot as plt
 
 """ Parameters """
-nPoints = 500
-
+nPoints = 5000
 dimension = 2
-nClusters = 4
 D = Distance()
 
 
-""" Points test """
-data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 1)
-filesManagment.write_data(data, "in.csv")
-data = filesManagment.read_data("in.csv", ignore_first_column=True)
+""" G-means points test """
+data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 4)
 
-A = G_means(None, None, None)
-s, p = A.gaussian_test(data)
-
-print(s, p)
-
-points = zip(*data)
-plt.scatter(points[0], points[1])
-plt.show()
-
-
-"""
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
 
-A = GeneralizedLlyod(p, nClusters, D.euclidean, iter_max=5)
-A.run()
+g_means = G_means(p, 0.7, D.euclidean)
+g_means.run()
 
-display_points(A.clusters, A.centers)
+print("Number of clusters: "+str(g_means.k))
+print("Clusters: "+str(g_means.clusters))
+print("Centers: "+str(g_means.centers))
+display_points(g_means.clusters, g_means.centers)
 
 
-filesManagment.write_solution('out.csv', A.clusters)
-filesManagment.write_centers('centers.csv', A.centers)
-"""
+# filesManagment.write_solution('out.csv', A.clusters)
+# filesManagment.write_centers('centers.csv', A.centers)

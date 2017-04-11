@@ -9,17 +9,25 @@ import matplotlib.pyplot as plt
 
 """ Parameters """
 nPoints = 5000
-
 dimension = 2
-#nClusters = 4
+nClusters = 4
 D = Distance()
 
 
 """ Points test """
-data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 10)
+data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 5)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
 
+A = GeneralizedLlyod_stopUnchanged(p, nClusters, D.euclidean, iter_max=5)
+A.run()
+
+display_points(A.clusters, A.centers)
+
+
+# FIXME: create a new file for this test.
+""" n_cluster test """
+"""
 totalDistance = []
 cluster = [i for i in range(1,20)]
 
@@ -33,7 +41,7 @@ for nClusters in range(1,20):
 
 plt.plot(cluster, totalDistance)
 plt.show()
-
+"""
 
 
 """

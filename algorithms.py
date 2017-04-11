@@ -89,24 +89,15 @@ class Algorithm(object):
         Main loop of the algorithm
         :return: None
         """
-        for i in range(this.iterations):
 
-            this.choose_init_centers()
+        this.choose_init_centers()
+        this.update_distances()
+        this.points_to_clusters()
+
+        while this.stop_condition():
+            this.update_centers()
             this.update_distances()
             this.points_to_clusters()
-
-            while this.stop_condition():
-                this.update_centers()
-                this.update_distances()
-                this.points_to_clusters()
-
-            this.remember_best_result()
-
-            print("iteration: "+str(i+1))
-            print("distance totale: "+str(this.distMin))
-
-        this.centers = this.cBest
-        this.clusters=this.CBest
 
 
 class AverageResults(Algorithm):
@@ -145,25 +136,55 @@ class AverageResults(Algorithm):
             this.clusters_best = this.clusters
             this.distMin = totalDistance
 
+    def run(this):
+        """
+        Main loop of the algorithm
+        :return: None
+        """
+        for i in range(this.iterations):
+
+            this.choose_init_centers()
+            this.update_distances()
+            this.points_to_clusters()
+
+            while this.stop_condition():
+                this.update_centers()
+                this.update_distances()
+                this.points_to_clusters()
+
+            this.remember_best_result()
+
+            print("iteration: "+str(i+1))
+            print("distance totale: "+str(this.distMin))
+
+        this.centers = this.cBest
+        this.clusters=this.CBest
+
 
 class GeneralizedLlyod(Algorithm):
     """
     Generalize Lloyd's algorithm.
     """
-    def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
+    def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points', centers=None):
         super(GeneralizedLlyod, this).__init__(data, n_clusters, distance)
         this.iter = 0
         this.iter_max = iter_max
         this.data_type = data_type
+        this.centers = centers
 
     def choose_init_centers(this):
         """
         Choose k centers among p randomly.
         """
-        this.centers = []
-        pTmp = list(this.p)
-        for i in range(this.k):
-            this.centers.append(pTmp.pop(randint(0, len(pTmp) - 1)))
+
+        if this.centers is not None:
+            if len(this.centers) != this.k:
+                raise Exception("Number of centers provided incorrect.")
+        else:
+            this.centers = []
+            pTmp = list(this.p)
+            for i in range(this.k):
+                this.centers.append(pTmp.pop(randint(0, len(pTmp) - 1)))
 
     def stop_condition(this):
         """
@@ -241,28 +262,35 @@ class GeneralizedLlyod_stopUnchanged(GeneralizedLlyod):
         else:
             return False
 
+
 class G_means:
+    """
+    Choose the first center randomly: first element of the data provided.
+    """
     def __init__(this, data, alpha, distance):
         this.data = data
         this.alpha = alpha
         this.distance = distance
-        this.c = []
+        this.k = 1
+        this.centers = []
+        this.clusters = []
 
-    @staticmethod
-    def gaussian_test(data):
-        return stats.normaltest(data)
+    def is_gaussian(this, data):
+        s, p = stats.normaltest(data, axis=None)
+        return this.alpha < p
 
     def run(this):
-        k = 1
         k_former = -1
-        centers = [point]
 
-        if k_former != k:
-            k_former = k
-            k_means = GeneralizedLlyod(this.data, k, this.distance, centers)
+        while k_former != this.k:
+            k_former = this.k
+            k_means = GeneralizedLlyod_stopUnchanged(this.data, this.k, this.distance)
+            k_means.run()
+
+            this.centers = k_means.centers
+            this.clusters = k_means.clusters
 
             for cluster in k_means.clusters:
-                p = this.gaussian_test(cluster)
-                if p < 0.5:
-                    centers.append(new_center)
-                    k+=1
+                if len(cluster) >= 20 and not this.is_gaussian(cluster):
+                    this.k += 1
+
