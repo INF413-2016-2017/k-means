@@ -32,6 +32,7 @@ class Algorithm(object):
         :param data_type: Indicates if the data are points or words.
         :return: Average data
         """
+
         if data_type == 'points':
             """
                 Return the coordinates of the barycenter of the tuples in the list distances
@@ -52,7 +53,7 @@ class Algorithm(object):
             """
                 Return the average word from the list of words.
             """
-            # FIXME: sometimes, data is empty.
+
             max_length = max(map(len, data))
             average_word = ['' for k in range(max_length)]
 
@@ -199,8 +200,9 @@ class GeneralizedLlyod(Algorithm):
         Choose a new center for each cluster.
         :return: None.
         """
+        # FIXME: sometimes, a cluster does not contain any point. Hence, the call to _average will result in an error.
         for i in range(this.k):
-            this.centers[i] = this._average(this.clusters[i], this.data_type)  # Barycenter of average word
+            this.centers[i] = this._average(this.clusters[i], this.data_type)  # Barycenter or average word
 
     def points_to_clusters(this):
         """

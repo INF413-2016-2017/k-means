@@ -8,7 +8,7 @@ from utilities import *
 import matplotlib.pyplot as plt
 
 """ Parameters """
-nPoints = 5000
+nPoints = 10
 dimension = 2
 nClusters = 4
 D = Distance()
