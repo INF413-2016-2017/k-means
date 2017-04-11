@@ -5,8 +5,6 @@ import filesManagment
 from algorithms import *
 from utilities import *
 
-import matplotlib.pyplot as plt
-
 """ Parameters """
 nPoints = 1000
 dimension = 2
@@ -15,7 +13,7 @@ D = Distance()
 
 
 """ Points test """
-data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 5)
+data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 4)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
 
@@ -25,9 +23,20 @@ A.run()
 display_points(A.clusters, A.centers, dimension)
 
 
+"""
+filesManagment.write_solution('out.csv', A.clusters)
+filesManagment.write_centers('centers.csv', A.centers)
+"""
+
+
+
+
+
 # FIXME: create a new file for this test.
 """ n_cluster test """
 """
+import matplotlib.pyplot as plt
+
 totalDistance = []
 cluster = [i for i in range(1,20)]
 
@@ -44,7 +53,3 @@ plt.show()
 """
 
 
-"""
-filesManagment.write_solution('out.csv', A.clusters)
-filesManagment.write_centers('centers.csv', A.centers)
-"""

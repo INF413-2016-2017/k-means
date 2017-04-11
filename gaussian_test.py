@@ -16,13 +16,13 @@ dimension = 2
 
 """ Gaussian test """
 while True:
-    data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 3)
+    data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 2)
     filesManagment.write_data(data, "in.csv")
     data = filesManagment.read_data("in.csv", ignore_first_column=True)
 
-    s, p = stats.normaltest(data, axis=None)
-
-    print(s, p)
+    #print(stats.normaltest(data, axis=None))
+    dim = zip(*data)
+    print(stats.anderson_ksamp(data))
 
     points = zip(*data)
     plt.scatter(points[0], points[1])

@@ -18,7 +18,7 @@ data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 6)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
 
-g_means = G_means(p, 0.6, D.euclidean)
+g_means = G_means(p, 0.055, D.euclidean)
 g_means.run()
 
 print("Number of clusters: "+str(g_means.k))
