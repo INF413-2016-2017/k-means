@@ -36,9 +36,9 @@ p = filesManagment.read_data("in.csv", ignore_first_column=True)
 A = GeneralizedLlyod(p, nClusters, D.euclidean, iter_max=5)
 A.run()
 
-display_points(A.C, A.c)
+display_points(A.clusters, A.centers)
 
 
-filesManagment.write_solution('out.csv', A.C)
-filesManagment.write_centers('centers.csv', A.c)
+filesManagment.write_solution('out.csv', A.clusters)
+filesManagment.write_centers('centers.csv', A.centers)
 """

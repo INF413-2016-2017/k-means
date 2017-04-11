@@ -29,7 +29,7 @@ for nClusters in range(1,20):
     totalDistance.append(A.distMin)
 
     if nClusters == 1:
-        display_points(A.C, A.c)
+        display_points(A.clusters, A.centers)
 
 plt.plot(cluster, totalDistance)
 plt.show()
@@ -37,6 +37,6 @@ plt.show()
 
 
 """
-filesManagment.write_solution('out.csv', A.C)
-filesManagment.write_centers('centers.csv', A.c)
+filesManagment.write_solution('out.csv', A.clusters)
+filesManagment.write_centers('centers.csv', A.centers)
 """

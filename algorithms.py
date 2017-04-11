@@ -5,11 +5,9 @@ from collections import Counter
 import numpy as np
 import scipy.stats as stats
 
-import itertools
-
 
 class Algorithm(object):
-    def __init__(this, data, n_clusters, distance, iterations=20):
+    def __init__(this, data, n_clusters, distance):
         """
         :type data: object
         :type n_clusters: int
@@ -21,37 +19,10 @@ class Algorithm(object):
         this.p = set(data)  # Set of data.
         this.n = len(data)  # Number of data.
         this.k = n_clusters  # Number of clusters.
-        this.c = []  # List of centers.
-        this.L = {}  # Dictionary of list representing the distances of each element to the centers.
-        this.C = []  # List of list in which C[k] is the list of data in cluster k.
+        this.centers = []  # List of centers.
+        this.distances = {}  # Dictionary of list representing the distances of each element to the centers.
+        this.clusters = []  # List of list in which clusters[k] is the list of data in cluster k.
         this.distance = distance
-
-        this.iterations = iterations
-        #the algorithm is launched iterations times and keeps the best result
-
-        this.distMin = 0 #best sum of distances between points and their center
-        this.cBest = [] #best c
-        this.CBest = [] #best C
-
-    def remember_best_result(this):
-        """
-        Stores the best result so far
-        """
-
-        totalDistance = 0
-
-        for i in range(len(this.C)):
-        #for each center
-            for point in this.C[i]:
-            #for each point related to this center
-                totalDistance+=this.L[point][i]
-                #add the distance between the point and the center
-
-        #if this is the best result so far (or the 1st) we remember it
-        if totalDistance < this.distMin or this.distMin == 0:
-            this.cBest = this.c
-            this.CBest = this.C
-            this.distMin = totalDistance
 
     @staticmethod
     def _average(data, data_type):
@@ -63,7 +34,7 @@ class Algorithm(object):
         """
         if data_type == 'points':
             """
-                Return the coordinates of the barycenter of the tuples in the list L
+                Return the coordinates of the barycenter of the tuples in the list distances
             """
             n = len(data)
             d = len(data[0])  # Number of coordinates
@@ -105,13 +76,13 @@ class Algorithm(object):
         Updates the dictionary of distances.
         :return: None
         """
-        pLeft = this.p - set(this.c)
-        this.L = {}
+        pLeft = this.p - set(this.centers)
+        this.distances = {}
 
         for p in pLeft:
-            this.L[p] = [0 for i in range(this.k)]
+            this.distances[p] = [0 for i in range(this.k)]
             for i in range(this.k):
-                this.L[p][i] = this.distance(this.c[i], p)
+                this.distances[p][i] = this.distance(this.centers[i], p)
 
     def run(this):
         """
@@ -134,8 +105,45 @@ class Algorithm(object):
             print("iteration: "+str(i+1))
             print("distance totale: "+str(this.distMin))
 
-        this.c = this.cBest
-        this.C=this.CBest
+        this.centers = this.cBest
+        this.clusters=this.CBest
+
+
+class AverageResults(Algorithm):
+    def __init__(this, data, n_clusters, distance, iterations=20):
+        """
+        Allows to launch an algorithm iterations times, and keep the best result among all solutions produced.
+        :type data: object
+        :type n_clusters: int
+        :param data: Input data
+        :param n_clusters: Number of clusters
+        :param distance: function that takes two arguments.
+        :param iterations: Number of times to launch the algorithm.
+        """
+
+        super(AverageResults, this).__init__(data, n_clusters, distance)
+
+        this.iterations = iterations
+        this.distMin = 0 # Best sum of distances between points and their center
+        this.centers_best = [] # Best centers
+        this.clusters_best = [] # Best clusters
+
+    def remember_best_result(this):
+        """
+        Stores the best result so far
+        """
+
+        totalDistance = 0
+
+        for cluster in range(len(this.clusters)):
+            for point in this.clusters[i]:
+                totalDistance += this.distances[point][i]
+
+        # If this is the best result so far (or the 1st) we remember it
+        if totalDistance < this.distMin or this.distMin == 0:
+            this.centers_best = this.centers
+            this.clusters_best = this.clusters
+            this.distMin = totalDistance
 
 
 class GeneralizedLlyod(Algorithm):
@@ -152,10 +160,10 @@ class GeneralizedLlyod(Algorithm):
         """
         Choose k centers among p randomly.
         """
-        this.c = []
+        this.centers = []
         pTmp = list(this.p)
         for i in range(this.k):
-            this.c.append(pTmp.pop(randint(0, len(pTmp) - 1)))
+            this.centers.append(pTmp.pop(randint(0, len(pTmp) - 1)))
 
     def stop_condition(this):
         """
@@ -171,17 +179,17 @@ class GeneralizedLlyod(Algorithm):
         :return: None.
         """
         for i in range(this.k):
-            this.c[i] = this._average(this.C[i], this.data_type)  # Barycenter of average word
+            this.centers[i] = this._average(this.clusters[i], this.data_type)  # Barycenter of average word
 
     def points_to_clusters(this):
         """
         Assign points to the cluster of the closest center.
         :return: None
         """
-        this.C = [[] for i in range(this.k)]  # C[i] is the list of points in cluster i.
+        this.clusters = [[] for i in range(this.k)]  # clusters[i] is the list of points in cluster i.
 
-        for p in this.L.keys():
-            this.C[np.argmin(this.L[p])].append(p)
+        for p in this.distances.keys():
+            this.clusters[np.argmin(this.distances[p])].append(p)
 
 
 class GeneralizedLlyod_clusterAsCenter(GeneralizedLlyod):
@@ -197,20 +205,20 @@ class GeneralizedLlyod_clusterAsCenter(GeneralizedLlyod):
         :return: None
         """
         for i in range(this.k):
-            # Return the closest point to the average in this.C[i].
-            B = this._average(this.C[i], this.data_type)  # Barycenter for points, else average word
-            distances = [this.distance(this.C[i][j], B) for j in range(len(this.C[i]))]
-            this.c[i] = this.C[i][np.argmin(distances)]
+            # Return the closest point to the average in this.clusters[i].
+            B = this._average(this.clusters[i], this.data_type)  # Barycenter for points, else average word
+            distances = [this.distance(this.clusters[i][j], B) for j in range(len(this.clusters[i]))]
+            this.centers[i] = this.clusters[i][np.argmin(distances)]
 
     def points_to_clusters(this):
         """
         Assign points to the cluster of the closest center.
         :return: None
         """
-        this.C = [[this.c[i]] for i in range(this.k)]  # C[i]: list of points in cluster i. Add the center in the list.
+        this.clusters = [[this.centers[i]] for i in range(this.k)]  # clusters[i]: list of points in cluster i. Add the center in the list.
 
-        for p in this.L.keys():
-            this.C[np.argmin(this.L[p])].append(p)
+        for p in this.distances.keys():
+            this.clusters[np.argmin(this.distances[p])].append(p)
 
 
 class GeneralizedLlyod_stopUnchanged(GeneralizedLlyod):
@@ -219,7 +227,7 @@ class GeneralizedLlyod_stopUnchanged(GeneralizedLlyod):
     """
     def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
         super(GeneralizedLlyod_stopUnchanged, this).__init__(data, n_clusters, distance, iter_max, data_type)
-        this.c_former = []
+        this.centers_former = []
 
     def stop_condition(this):
         """
@@ -227,8 +235,8 @@ class GeneralizedLlyod_stopUnchanged(GeneralizedLlyod):
         Compare the list of center instead of the clusters: faster.
         :return: boolean
         """
-        if this.c_former != this.c:
-            this.c_former = this.c
+        if this.centers_former != this.centers:
+            this.centers_former = this.centers
             return True
         else:
             return False
@@ -253,7 +261,7 @@ class G_means:
             k_former = k
             k_means = GeneralizedLlyod(this.data, k, this.distance, centers)
 
-            for cluster in k_means.C:
+            for cluster in k_means.clusters:
                 p = this.gaussian_test(cluster)
                 if p < 0.5:
                     centers.append(new_center)
