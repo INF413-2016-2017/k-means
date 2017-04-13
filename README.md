@@ -9,8 +9,8 @@ The programs currently work only on _python 2.7_
 
 Notations
 ---------
-c is the list of chosen centers: c[i] returns the coordinates of the center i.  
-C is the list of points in the cluster k. The center is included in the list.  
+_centers_: list of chosen centers: _centers[i]_ returns the coordinates of the center _i_.
+_clusters_: list of points in the cluster _k_. The center is included in the list.
 
 
 Archive name
@@ -33,8 +33,7 @@ Questions
 Todo
 ----
 -Use numpy instead of list/tuples.   
--Revoir les notations: s'aligner sur l'enoncé  
--Add complexity counter.  
+-Add complexity counter.
 -Closing file after write: error.  
 -Display different iterations.  
 -Add more data input.  
@@ -42,4 +41,3 @@ Todo
 -Follow pep conventions.  
 -Improve file management.
 -Comment.
--Add random data generation function: generate k clusters following a gaussian distribution.

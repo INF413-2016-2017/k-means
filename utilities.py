@@ -6,29 +6,31 @@ from math import sqrt
 import distance
 
 
-def display_points(C, c):
+def display_points(C, c, dimension):
     """
     Display the cluster using a different color for each cluster.
     :param C: List of clusters.
     :param c: List of centers.
     :return: None
     """
-    if len(C[0][0]) == 2:
+    if dimension == 2:
         for cluster in C:
-            points = zip(*cluster)
-            plt.scatter(points[0], points[1], s=10)
+            if cluster != []:
+                points = zip(*cluster)
+                plt.scatter(points[0], points[1], s=10)
 
         for center in c:
             plt.scatter(*center, marker='*', s=200, color='black')
         plt.show()
 
-    elif len(C[0][0]) == 3:
+    elif dimension == 3:
         fig = plt.figure()
         ax = Axes3D(fig)
 
         for cluster in C:
-            points = zip(*cluster)
-            ax.scatter(points[0], points[1], points[2], s=10)
+            if cluster != []:
+                points = zip(*cluster)
+                ax.scatter(points[0], points[1], points[2], s=10)
         plt.show()
 
     else:

@@ -5,38 +5,51 @@ import filesManagment
 from algorithms import *
 from utilities import *
 
-import matplotlib.pyplot as plt
-
 """ Parameters """
-nPoints = 5000
-
+nPoints = 1000
 dimension = 2
-#nClusters = 4
+nClusters = 4
 D = Distance()
 
 
 """ Points test """
-data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 10)
+data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 4)
 filesManagment.write_data(data, "in.csv")
 p = filesManagment.read_data("in.csv", ignore_first_column=True)
+
+A = GeneralizedLlyod(p, nClusters, D.euclidean, iter_max=5)
+A.run()
+
+display_points(A.clusters, A.centers, dimension)
+
+
+"""
+filesManagment.write_solution('out.csv', A.clusters)
+filesManagment.write_centers('centers.csv', A.centers)
+"""
+
+
+
+
+
+# FIXME: create a new file for this test.
+""" n_cluster test """
+"""
+import matplotlib.pyplot as plt
 
 totalDistance = []
 cluster = [i for i in range(1,20)]
 
 for nClusters in range(1,20):
-    A = GeneralizedLlyod(p, nClusters, D.euclidean, iter_max=5)
+    A = GeneralizedLlyod(data, nClusters, D.euclidean, iter_max=5)
     A.run()
     totalDistance.append(A.distMin)
 
     if nClusters == 1:
-        display_points(A.C, A.c)
+        display_points(A.clusters, A.centers)
 
 plt.plot(cluster, totalDistance)
 plt.show()
-
-
-
 """
-filesManagment.write_solution('out.csv', A.C)
-filesManagment.write_centers('centers.csv', A.c)
-"""
+
+
