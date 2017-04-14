@@ -3,7 +3,7 @@
 from random import randint, random
 from collections import Counter
 import numpy as np
-#import scipy.stats as stats
+import scipy.stats as stats
 import matplotlib.pyplot as plt
 
 
