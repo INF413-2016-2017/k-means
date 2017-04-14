@@ -6,7 +6,6 @@ This file test a set of points for a gaussian distribution.
 """
 
 import filesManagment
-from algorithms import *
 import matplotlib.pyplot as plt
 import scipy.stats as stats
 

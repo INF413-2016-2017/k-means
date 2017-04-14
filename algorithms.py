@@ -3,7 +3,7 @@
 from random import randint, random
 from collections import Counter
 import numpy as np
-import scipy.stats as stats
+#import scipy.stats as stats
 import matplotlib.pyplot as plt
 
 
@@ -281,7 +281,7 @@ class GeneralizedLlyod_clusterAsCenter(GeneralizedLlyod):
 class GeneralizedLlyod_stopUnchanged(GeneralizedLlyod):
     """
     Base algorithm, but stops when no points changed of cluster.
-    FIXME: doesn't work. Strange
+    FIXME: doesn't work. Strange behavior.
     """
     def __init__(this, data, n_clusters, distance, iter_max=10, data_type='points'):
         super(GeneralizedLlyod_stopUnchanged, this).__init__(data, n_clusters, distance, iter_max, data_type)
