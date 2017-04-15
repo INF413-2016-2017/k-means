@@ -7,7 +7,7 @@ from utilities import *
 
 """ Parameters """
 nPoints = 5000
-dimension = 3
+dimension = 2
 nClusters = 5
 D = Distance()
 
@@ -25,7 +25,7 @@ A.run()
 B = GeneralizedLlyod_clusterAsCenter(p, nClusters, D.euclidean, iter_max=5)
 B.run()
 
-C = GeneralizedLlyod_clusterAsCenter(p, nClusters, D.euclidean, iter_max=5)
+C = GeneralizedLlyod_stopUnchanged(p, nClusters, D.euclidean, iter_max=5)
 C.run()
 
 # Display the clusters and the centers. Support dimensions 2 and 3.
