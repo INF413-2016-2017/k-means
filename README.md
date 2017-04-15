@@ -6,6 +6,14 @@ or dataType='words' in the instantiation of the class.
 In the file main.py, choose the desired parameters.  
 The programs currently work only on _python 2.7_  
 
+_main_points.py execute tout à tour trois algorithmes ()
+
+_main_words.py execute l'algorithme avec une liste de mots
+
+_g-means_points execute l'algorithme G-means
+
+_test_gaussian.py
+
 
 Notations
 ---------
@@ -16,28 +24,3 @@ _clusters_: list of points in the cluster _k_. The center is included in the lis
 Archive name
 ------------
 TP1_Gardin_Garet_INF413_2016_2017_A
-
-
-Questions
----------
--Bibliographie  
--Faire des recherches.
--Choix de la distance.
--Choix des centres initiaux (voir les pdf)  
--Choix du critère d'arrêt  
--Choix du nombre de centres (à voir, cela peut dépendre de l'utilisation)  
--Complexity: cluster size, nPoints.  
--Test for algorithm quality.  
--Add license.
-
-Todo
-----
--Use numpy instead of list/tuples.   
--Add complexity counter.
--Closing file after write: error.  
--Display different iterations.  
--Add more data input.  
--Add ponderation for euclidean distance.  
--Follow pep conventions.  
--Improve file management.
--Comment.
