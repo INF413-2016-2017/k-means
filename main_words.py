@@ -8,7 +8,7 @@ from utilities import *
 
 """ Parameters """
 filename = 'words.txt'
-k = 3
+k = 5
 D = Distance()
 
 
@@ -19,3 +19,5 @@ A = GeneralizedLlyod_clusterAsCenter(data, k, D.levenshtein, data_type='words', 
 A.run()
 
 display_words(A.clusters)
+
+print(A.centers)
