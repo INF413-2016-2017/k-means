@@ -13,7 +13,7 @@ D = Distance()
 
 
 """ Points test """
-data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 7)
+data = filesManagment.generate_random_gaussian_data(nPoints, dimension, 5)
 # data = filesManagment.generate_random_data(nPoints, dimension)
 
 filesManagment.write_data(data, "in.csv")
