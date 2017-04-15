@@ -19,7 +19,6 @@ while True:
     filesManagment.write_data(data, "in.csv")
     data = filesManagment.read_data("in.csv", ignore_first_column=True)
 
-    #print(stats.normaltest(data, axis=None))
     dim = zip(*data)
     print(stats.anderson_ksamp(data))
 
