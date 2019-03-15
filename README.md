@@ -19,8 +19,3 @@ Notations
 ---------
 _centers_: list of chosen centers: _centers[i]_ returns the coordinates of the center _i_.
 _clusters_: list of points in the cluster _k_. The center is included in the list.
-
-
-Archive name
-------------
-TP1_Gardin_Garet_INF413_2016_2017_A
